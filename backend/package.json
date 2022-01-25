@@ -1,7 +1,7 @@
 {
-  "name": "twitter-clone-backend",
+  "name": "Whistler",
   "version": "1.0.0",
-  "description": "Backend for twitter clone",
+  "description": "Backend for whistler. A twitter-like social media platform.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
