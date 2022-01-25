@@ -1,0 +1,15 @@
+* Technologies to use in this project.
+- Node.js
+- express.js
+- MySQL
+
+* Todo
+  - [-] Plan out the workings of the project.
+  - [-] Plan out the database.
+  - [x]  Plan out the user table.
+   - [x] Find out how to implement unique user id in MySQL.
+   - [x] Create a simple gender table.
+
+
+* What features project must have?
+  - [ ] User account 
