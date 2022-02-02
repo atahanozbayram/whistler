@@ -68,6 +68,7 @@ custom_validators.isEmailAvailable = function () {
 		return mysqlPromise(value);
 	};
 };
+
 custom_validators.isUsernameAvailable = function () {
 	return function (value, { path }) {
 		let mysqlPromise = function (username) {
@@ -96,6 +97,9 @@ custom_validators.isUsernameAvailable = function () {
 custom_validators.passwordConfirmation = function () {
 	return function (value, { req }) {
 		if (value !== req.body.password) throw new Error("Password confirmation is incorrect");
+
+		// if no problem happens, function must return true.
+		return true;
 	};
 };
 
