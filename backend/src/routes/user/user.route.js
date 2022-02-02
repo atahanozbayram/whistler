@@ -24,11 +24,23 @@ validations.signUp = [
 	check("lastname")
 		.exists()
 		.bail()
-		.withMessage(errmsg.exists().isString().bail().withMessage(errmsg.isType("string")))
-		.isLength("40", { max: 48 })
+		.withMessage(errmsg.exists())
+		.isString()
+		.bail()
+		.withMessage(errmsg.isType("string"))
+		.notEmpty()
+		.bail()
+		.withMessage(errmsg.notEmpty())
+		.isLength({ max: 48 })
 		.bail()
 		.withMessage(errmsg.isLength({ max: 48 })),
-	check("birth_date").exists().bail().withMessage(errmsg.exists()).isDate().bail().withMessage(errmsg.isType("date")),
+	check("birth_date")
+		.exists()
+		.bail()
+		.withMessage(errmsg.exists())
+		.isDate()
+		.bail()
+		.withMessage(errmsg.isType("date: yyyy-mm-dd")),
 	check("gender")
 		.exists()
 		.bail()
@@ -36,14 +48,21 @@ validations.signUp = [
 		.isInt({ min: 0, max: 2 })
 		.bail()
 		.withMessage(errmsg.isInt({ min: 0, max: 2 })),
-	check("email").exists().bail().withMessage(errmsg.exists()).isEmail().withMessage(errmsg.isEmail()),
+	check("email")
+		.exists()
+		.bail()
+		.withMessage(errmsg.exists())
+		.isEmail()
+		.withMessage(errmsg.isEmail())
+		.custom(cstmval.isEmailAvailable()),
 	check("username")
 		.exists()
 		.bail()
 		.withMessage(errmsg.exists())
 		.isLength({ min: 8, max: 16 })
 		.bail()
-		.withMessage(errmsg.isLength({ min: 8, max: 16 })),
+		.withMessage(errmsg.isLength({ min: 8, max: 16 }))
+		.custom(cstmval.isUsernameAvailable()),
 	check("password")
 		.exists()
 		.bail()
