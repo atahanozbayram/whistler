@@ -7,6 +7,12 @@ dynamic_messages.exists = function () {
 	};
 };
 
+dynamic_messages.notEmpty = function () {
+	return function (value, { path }) {
+		return `${path} field must not be empty.`;
+	};
+};
+
 dynamic_messages.isType = function (type) {
 	return function (value, { path }) {
 		return `${path} must be type of ${type}, instead provided '${typeof value}.'`;
