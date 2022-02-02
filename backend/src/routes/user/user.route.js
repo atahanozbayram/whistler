@@ -14,7 +14,13 @@ validations.signUp = [
 		.withMessage(errmsg.exists())
 		.isString()
 		.bail()
-		.withMessage(errmsg.isType("string")),
+		.withMessage(errmsg.isType("string"))
+		.notEmpty()
+		.bail()
+		.withMessage(errmsg.notEmpty())
+		.isLength({ max: 48 })
+		.bail()
+		.withMessage(errmsg.isLength({ max: 48 })),
 	check("lastname")
 		.exists()
 		.bail()
