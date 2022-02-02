@@ -68,6 +68,29 @@ custom_validators.isEmailAvailable = function () {
 		return mysqlPromise(value);
 	};
 };
+custom_validators.isUsernameAvailable = function () {
+	return function (value, { path }) {
+		let mysqlPromise = function (username) {
+			return new Promise((resolve, reject) => {
+				mysql_connection.query(
+					"SELECT * FROM user WHERE username=" + mysql.escape(username),
+					function (error, results) {
+						if (error !== null) throw new Error(error);
+
+						if (results.length !== 0) {
+							reject("username is already in use.");
+							return false;
+						}
+
+						resolve("no problem");
+						return true;
+					}
+				);
+			});
+		};
+
+		return mysqlPromise(value);
+	};
 };
 
 custom_validators.passwordConfirmation = function () {
