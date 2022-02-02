@@ -1,3 +1,5 @@
+const mysql = require("mysql");
+const { connection: mysql_connection } = require("@root/src/utils/database-connection");
 const dynamic_messages = {};
 const custom_validators = {};
 
@@ -45,8 +47,27 @@ dynamic_messages.isStrongPassword = function ({ minLowerCase = 1, minUpperCase =
 	};
 };
 
-custom_validators.email = function () {
-	return function (value) {};
+custom_validators.isEmailAvailable = function () {
+	return function (value, { path }) {
+		let mysqlPromise = function (email) {
+			return new Promise((resolve, reject) => {
+				mysql_connection.query("SELECT * FROM user WHERE email=" + mysql.escape(email), function (error, results) {
+					if (error !== null) throw new Error(error);
+
+					if (results.length !== 0) {
+						reject("Email is already in use.");
+						return;
+					}
+
+					resolve("no problem");
+					return;
+				});
+			});
+		};
+
+		return mysqlPromise(value);
+	};
+};
 };
 
 custom_validators.passwordConfirmation = function () {
