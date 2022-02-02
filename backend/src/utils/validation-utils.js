@@ -48,7 +48,7 @@ dynamic_messages.isStrongPassword = function ({ minLowerCase = 1, minUpperCase =
 };
 
 custom_validators.isEmailAvailable = function () {
-	return function (value, { path }) {
+	return function (value) {
 		let mysqlPromise = function (email) {
 			return new Promise((resolve, reject) => {
 				mysql_connection.query("SELECT * FROM user WHERE email=" + mysql.escape(email), function (error, results) {
@@ -70,7 +70,7 @@ custom_validators.isEmailAvailable = function () {
 };
 
 custom_validators.isUsernameAvailable = function () {
-	return function (value, { path }) {
+	return function (value) {
 		let mysqlPromise = function (username) {
 			return new Promise((resolve, reject) => {
 				mysql_connection.query(
