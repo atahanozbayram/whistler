@@ -82,7 +82,7 @@ validations.signUp = [
 
 implementations.signUp = function (req, res) {
 	const errors = validationResult(req);
-	if (errors.isEmpty() == false) {
+	if (errors.isEmpty() === false) {
 		res.json({ errors: errors.array() });
 		return;
 	}
