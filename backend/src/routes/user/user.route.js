@@ -1,3 +1,7 @@
+const mysql = require("mysql");
+const { v1: uuidv1 } = require("uuid");
+const { connection: mysql_connection } = require("@root/src/utils/database-connection");
+const bcrypt = require("bcrypt");
 const express = require("express");
 const { dynamic_messages: errmsg, custom_validators: cstmval } = require("@root/src/utils/validation-utils");
 const { check, validationResult } = require("express-validator");
@@ -76,8 +80,39 @@ validations.signUp = [
 	check("passwordConfirmation").exists().bail().withMessage(errmsg.exists()).custom(cstmval.passwordConfirmation()),
 ];
 
-// implementations.signUp = function (req, res, next) {};
+implementations.signUp = function (req, res) {
+	const errors = validationResult(req);
+	if (errors.isEmpty() == false) {
+		res.json({ errors: errors.array() });
+		return;
+	}
 
-signUpRoute;
-userRoute.post("/signup", validations.signUp);
-module.exports = userRoute;
+	let mysqlPromise = function (req) {
+		return new Promise((resolve, reject) => {
+			const { firstname, lastname, birth_date, gender, email, username, password } = req.body;
+
+			bcrypt.hash(password, 10).then((hash) => {
+				const uuidByteValue = Buffer.from(uuidv1().replace("-", ""), "hex");
+
+				let escapedValues = mysql.escape([firstname, lastname, birth_date, gender, email, username, hash]);
+				let query = `INSERT INTO user VALUES('${uuidByteValue}', ${escapedValues})`;
+
+				mysql_connection.query(query, function (error) {
+					if (error !== null) {
+						console.error(error);
+						reject("some database errors occured!");
+					}
+					// success below
+					resolve("user successfully signed up.");
+				});
+			});
+		});
+	};
+
+	mysqlPromise(req, res).then((message) => {
+		res.status(200).send(message);
+	});
+};
+
+userRoute.post("/signup", validations.signUp, implementations.signUp);
+module.exports = { userRoute };
