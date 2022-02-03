@@ -51,11 +51,17 @@ custom_validators.isEmailAvailable = function () {
 	return function (value) {
 		let mysqlPromise = function (email) {
 			return new Promise((resolve, reject) => {
-				mysql_connection.query("SELECT * FROM user WHERE email=" + mysql.escape(email), function (error, results) {
-					if (error !== null) throw new Error(error);
+				mysql_connection.query(
+					"SELECT * FROM user WHERE email=" + mysql.escape(email) + " and email_verification = true",
+					function (error, results) {
+						if (error !== null) throw new Error(error);
 
-					if (results.length !== 0) {
-						reject("Email is already in use.");
+						if (results.length !== 0) {
+							reject("Email is already in use.");
+							return;
+						}
+
+						resolve("no problem");
 						return;
 					}
 
