@@ -64,10 +64,7 @@ custom_validators.isEmailAvailable = function () {
 						resolve("no problem");
 						return;
 					}
-
-					resolve("no problem");
-					return;
-				});
+				);
 			});
 		};
 
@@ -80,7 +77,7 @@ custom_validators.isUsernameAvailable = function () {
 		let mysqlPromise = function (username) {
 			return new Promise((resolve, reject) => {
 				mysql_connection.query(
-					"SELECT * FROM user WHERE username=" + mysql.escape(username),
+					"SELECT * FROM user WHERE username=" + mysql.escape(username) + " and email_verification = true",
 					function (error, results) {
 						if (error !== null) throw new Error(error);
 
