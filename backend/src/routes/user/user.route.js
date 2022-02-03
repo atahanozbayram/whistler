@@ -95,7 +95,7 @@ implementations.signUp = function (req, res) {
 				const uuidByteValue = Buffer.from(uuidv1().replace("-", ""), "hex");
 
 				let escapedValues = mysql.escape([firstname, lastname, birth_date, gender, email, username, hash]);
-				let query = `INSERT INTO user VALUES('${uuidByteValue}', ${escapedValues})`;
+				let query = `INSERT INTO user VALUES('${uuidByteValue}', ${escapedValues}, false)`;
 
 				mysql_connection.query(query, function (error) {
 					if (error !== null) {
