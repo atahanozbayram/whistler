@@ -5,6 +5,8 @@ const bcrypt = require("bcrypt");
 const express = require("express");
 const { dynamic_messages: errmsg, custom_validators: cstmval } = require("@root/src/utils/validation-utils");
 const { check, validationResult } = require("express-validator");
+const { generateVerificationUrl } = require("@root/src/utils/verification-url-gen");
+const { transporter: mailTransporter } = require("@root/src/utils/mailer");
 
 const userRoute = express.Router();
 const validations = {};
@@ -87,30 +89,51 @@ implementations.signUp = function (req, res) {
 		return;
 	}
 
-	let mysqlPromise = function (req) {
-		return new Promise((resolve, reject) => {
-			const { firstname, lastname, birth_date, gender, email, username, password } = req.body;
+	const uuid = uuidv1();
 
-			bcrypt.hash(password, 10).then((hash) => {
-				const uuidByteValue = Buffer.from(uuidv1().replace("-", ""), "hex");
+	const uuidByteValue = Buffer.from(uuid.replace("-", ""), "hex");
+	const { firstname, lastname, birth_date, gender, email, username, password } = req.body;
 
-				let escapedValues = mysql.escape([firstname, lastname, birth_date, gender, email, username, hash]);
-				let query = `INSERT INTO user VALUES('${uuidByteValue}', ${escapedValues}, false)`;
+	bcrypt.hash(password, 10).then((hash) => {
+		let escapedValues = mysql.escape([firstname, lastname, birth_date, gender, email, username, hash]);
+		let query = `INSERT INTO user VALUES('${uuidByteValue}', ${escapedValues}, false)`;
 
-				mysql_connection.query(query, function (error) {
+		mysql_connection.query(query, function (error) {
+			if (error !== null) {
+				console.log(error);
+				res.status(500).send("some database errors occured!");
+			}
+
+			const verificationUrl = generateVerificationUrl(uuid);
+
+			mysql_connection.query(
+				`INSERT INTO verification_url (user_uuid, url) VALUES('${uuidByteValue}', '${verificationUrl}')`,
+				function (error) {
 					if (error !== null) {
 						console.error(error);
-						reject("some database errors occured!");
+						res.status(500).send("some database errors occured!");
+						return;
 					}
-					// success below
-					resolve("user successfully signed up.");
-				});
-			});
-		});
-	};
 
-	mysqlPromise(req, res).then((message) => {
-		res.status(200).send(message);
+					const verificationMessage = {
+						from: process.env["MAIL_USER"],
+						to: email,
+						subject: "account verification",
+						html: `
+						<div>Please click the link to verify your account: <a href="http://${process.env["HOST"]}:${process.env["PORT"]}/api/user/verify/${verificationUrl}">verify.</a></div>
+						`,
+					};
+					mailTransporter.sendMail(verificationMessage, function (error) {
+						if (error !== null) {
+							console.error(error);
+							return;
+						}
+					});
+
+					res.status(200).send("Sign up form received successfully. A verification email will be sent.");
+				}
+			);
+		});
 	});
 };
 
