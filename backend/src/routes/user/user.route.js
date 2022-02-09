@@ -13,12 +13,17 @@ const utils = {};
 const validations = {};
 const implementations = {};
 
-utils.insertValidationUrl = function (user_uuidByte, url, user_email) {
+utils.uuidToBinary = function (uuid) {
+	const uuidBinaryValue = Buffer.from(uuid.replace("-", ""), "hex");
+	return uuidBinaryValue;
+};
+
+utils.insertValidationUrl = function (user_uuidBinary, url, user_email) {
 	return new Promise((resolve, reject) => {
 		let escapedValues = mysql.escape([url, user_email]);
 
 		mysql_connection.query(
-			`INSERT INTO verification_url (user_uuid, url, user_email) VALUES ('${user_uuidByte}', ${escapedValues})`,
+			`INSERT INTO verification_url (user_uuid, url, user_email) VALUES ('${user_uuidBinary}', ${escapedValues})`,
 			function (error, results) {
 				if (error !== null) {
 					console.error(error);
@@ -112,12 +117,12 @@ implementations.signUp = function (req, res) {
 
 	const uuid = uuidv1();
 
-	const uuidByteValue = Buffer.from(uuid.replace("-", ""), "hex");
+	const uuidBinaryValue = utils.uuidToBinary(uuid);
 	const { firstname, lastname, birth_date, gender, email, username, password } = req.body;
 
 	bcrypt.hash(password, 10).then((hash) => {
 		let escapedValues = mysql.escape([firstname, lastname, birth_date, gender, email, username, hash]);
-		let query = `INSERT INTO user VALUES('${uuidByteValue}', ${escapedValues}, false)`;
+		let query = `INSERT INTO user VALUES('${uuidBinaryValue}', ${escapedValues}, false)`;
 
 		mysql_connection.query(query, function (error) {
 			if (error !== null) {
@@ -130,7 +135,7 @@ implementations.signUp = function (req, res) {
 
 			const verificationUrl = generateVerificationUrl(uuid);
 			utils
-				.insertValidationUrl(uuidByteValue, verificationUrl, email)
+				.insertValidationUrl(uuidBinaryValue, verificationUrl, email)
 				.then(() => {
 					const verificationMessage = {
 						from: process.env["MAIL_USER"],
