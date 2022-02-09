@@ -9,8 +9,29 @@ const { generateVerificationUrl } = require("@root/src/utils/verification-url-ge
 const { transporter: mailTransporter } = require("@root/src/utils/mailer");
 
 const userRoute = express.Router();
+const utils = {};
 const validations = {};
 const implementations = {};
+
+utils.insertValidationUrl = function (user_uuidByte, url, user_email) {
+	return new Promise((resolve, reject) => {
+		let escapedValues = mysql.escape([url, user_email]);
+
+		mysql_connection.query(
+			`INSERT INTO verification_url (user_uuid, url, user_email) VALUES ('${user_uuidByte}', ${escapedValues})`,
+			function (error, results) {
+				if (error !== null) {
+					console.error(error);
+					reject("Some database error occured!");
+					return;
+				}
+
+				resolve(results);
+			}
+		);
+	});
+};
+
 // Think about the fields necessary for signup
 // firstname, lastname,  birth year, gender, email, email confirm, username, password, password confirm
 validations.signUp = [
