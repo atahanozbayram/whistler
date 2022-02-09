@@ -201,5 +201,53 @@ implementations.verify = function (req, res) {
 	});
 };
 
+implementations.newVerification = function (req, res) {
+	let username = req.body.username;
+	let email = req.body.email;
+
+	username = mysql.escape(username);
+	email = mysql.escape(email);
+
+	mysql_connection.query(
+		`SELECT * FROM user WHERE username = ${username} and email = ${email} and verified = 0`,
+		function (error, results) {
+			if (error !== null) {
+				console.error(error);
+				return;
+			}
+
+			if (results.length !== 0) {
+				const user_row = results[results.length - 1]; // we take the most recent one that has been inside the db
+				const { uuid, email } = user_row;
+
+				const verificationUrl = generateVerificationUrl(uuid);
+				utils.insertValidationUrl(uuid, verificationUrl, email).then(() => {
+					const verificationMessage = {
+						from: process.env["MAIL_USER"],
+						to: email,
+						subject: "account verification",
+						html: `
+						<div>If you didn't requested new verification email ignore this, otherwise click to verify yourself: <a href="http://${process.env["HOST"]}:${process.env["PORT"]}/api/user/verify/${verificationUrl}">verify.</a></div>
+						`,
+					};
+
+					mailTransporter.sendMail(verificationMessage, function (error) {
+						if (error !== null) {
+							console.error(error);
+							return;
+						}
+
+						console.log("email has been sent to " + email);
+					});
+				});
+			}
+
+			res.status(200).send("if username and email exists an email will be sent for verification.");
+		}
+	);
+};
+
 userRoute.post("/signup", validations.signUp, implementations.signUp);
+userRoute.post("/new-verification", implementations.newVerification);
+userRoute.get("/verify/:verificationUrl", implementations.verify);
 module.exports = { userRoute };
