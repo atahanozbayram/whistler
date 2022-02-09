@@ -52,7 +52,7 @@ custom_validators.isEmailAvailable = function () {
 		let mysqlPromise = function (email) {
 			return new Promise((resolve, reject) => {
 				mysql_connection.query(
-					"SELECT * FROM user WHERE email=" + mysql.escape(email) + " and email_verification = true",
+					"SELECT * FROM user WHERE email=" + mysql.escape(email) + " and verified = true",
 					function (error, results) {
 						if (error !== null) throw new Error(error);
 
@@ -77,7 +77,7 @@ custom_validators.isUsernameAvailable = function () {
 		let mysqlPromise = function (username) {
 			return new Promise((resolve, reject) => {
 				mysql_connection.query(
-					"SELECT * FROM user WHERE username=" + mysql.escape(username) + " and email_verification = true",
+					"SELECT * FROM user WHERE username=" + mysql.escape(username) + " and verified = true",
 					function (error, results) {
 						if (error !== null) throw new Error(error);
 
