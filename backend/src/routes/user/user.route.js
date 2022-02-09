@@ -123,19 +123,15 @@ implementations.signUp = function (req, res) {
 			if (error !== null) {
 				console.log(error);
 				res.status(500).send("some database errors occured!");
+				return;
 			}
 
+			res.status(201).send("user account is created successfully. verification email will be sent.");
+
 			const verificationUrl = generateVerificationUrl(uuid);
-
-			mysql_connection.query(
-				`INSERT INTO verification_url (user_uuid, url) VALUES('${uuidByteValue}', '${verificationUrl}')`,
-				function (error) {
-					if (error !== null) {
-						console.error(error);
-						res.status(500).send("some database errors occured!");
-						return;
-					}
-
+			utils
+				.insertValidationUrl(uuidByteValue, verificationUrl, email)
+				.then(() => {
 					const verificationMessage = {
 						from: process.env["MAIL_USER"],
 						to: email,
@@ -144,12 +140,20 @@ implementations.signUp = function (req, res) {
 						<div>Please click the link to verify your account: <a href="http://${process.env["HOST"]}:${process.env["PORT"]}/api/user/verify/${verificationUrl}">verify.</a></div>
 						`,
 					};
+
 					mailTransporter.sendMail(verificationMessage, function (error) {
 						if (error !== null) {
 							console.error(error);
 							return;
 						}
+
+						console.log("email has been sent to " + email);
 					});
+				})
+				.catch((errormsg) => res.status(500).send(errormsg));
+		});
+	});
+};
 
 					res.status(200).send("Sign up form received successfully. A verification email will be sent.");
 				}
