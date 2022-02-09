@@ -155,9 +155,48 @@ implementations.signUp = function (req, res) {
 	});
 };
 
-					res.status(200).send("Sign up form received successfully. A verification email will be sent.");
+implementations.verify = function (req, res) {
+	let verificationUrl = req.params.verificationUrl;
+
+	verificationUrl = mysql.escape(verificationUrl);
+
+	mysql_connection.query(`SELECT * FROM verification_url WHERE url = ${verificationUrl}`, function (error, results) {
+		if (error !== null) {
+			console.error(error);
+			res.status(500).send("some database errors occured!");
+			return;
+		}
+
+		if (results.length === 0) {
+			res.status(404).send("verification url does not exist or invalid.");
+			return;
+		}
+
+		let user_uuid = results[0].user_uuid;
+		let user_email = results[0].user_email;
+
+		mysql_connection.query(`UPDATE user SET verified = 1 WHERE uuid = '${user_uuid}'`, function (error) {
+			if (error !== null) {
+				console.error(error);
+				res.status(500).send("some database errors occured!");
+				return;
+			}
+
+			mysql_connection.query(`DELETE FROM user WHERE email = '${user_email}' and verified = 0`, function (error) {
+				if (error !== null) {
+					console.error(error);
+					return;
 				}
-			);
+			});
+
+			mysql_connection.query(`DELETE FROM verification_url WHERE user_email = '${user_email}'`, function (error) {
+				if (error !== null) {
+					console.error(error);
+					return;
+				}
+			});
+
+			res.status(200).send("verification is complete.");
 		});
 	});
 };
