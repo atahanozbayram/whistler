@@ -108,6 +108,20 @@ validations.signUp = [
 	check("passwordConfirmation").exists().bail().withMessage(errmsg.exists()).custom(cstmval.passwordConfirmation()),
 ];
 
+validations.newVerification = [
+	check("username")
+		.exists()
+		.bail()
+		.withMessage(errmsg.exists())
+		.isString()
+		.bail()
+		.withMessage(errmsg.isType("string"))
+		.isLength({ min: 8, max: 16 })
+		.bail()
+		.withMessage(errmsg.isLength({ min: 8, max: 16 })),
+	check("email").exists().bail().withMessage(errmsg.exists()).isEmail().bail().withMessage(errmsg.isEmail()),
+];
+
 implementations.signUp = function (req, res) {
 	const errors = validationResult(req);
 	if (errors.isEmpty() === false) {
@@ -253,6 +267,6 @@ implementations.newVerification = function (req, res) {
 };
 
 userRoute.post("/signup", validations.signUp, implementations.signUp);
-userRoute.post("/new-verification", implementations.newVerification);
+userRoute.post("/new-verification", validations.newVerification, implementations.newVerification);
 userRoute.get("/verify/:verificationUrl", implementations.verify);
 module.exports = { userRoute };
