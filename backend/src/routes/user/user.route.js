@@ -156,7 +156,7 @@ implementations.signUp = function (req, res) {
 						to: email,
 						subject: "account verification",
 						html: `
-						<div>Please click the link to verify your account: <a href="http://${process.env["HOST"]}:${process.env["PORT"]}/api/user/verify/${verificationUrl}">verify.</a></div>
+						<div>Please click the link to verify your account: <a href="http://${process.env["HOST"]}:${process.env["PORT"]}${req.baseUrl}/verify/${verificationUrl}">verify.</a></div>
 						`,
 					};
 
@@ -246,7 +246,7 @@ implementations.newVerification = function (req, res) {
 						to: email,
 						subject: "account verification",
 						html: `
-						<div>If you didn't requested new verification email ignore this, otherwise click to verify yourself: <a href="http://${process.env["HOST"]}:${process.env["PORT"]}/api/user/verify/${verificationUrl}">verify.</a></div>
+						<div>If you didn't requested new verification email ignore this, otherwise click to verify yourself: <a href="http://${process.env["HOST"]}:${process.env["PORT"]}${req.baseUrl}/verify/${verificationUrl}">verify.</a></div>
 						`,
 					};
 
