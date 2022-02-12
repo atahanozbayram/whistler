@@ -108,6 +108,23 @@ validations.signUp = [
 	check("passwordConfirmation").exists().bail().withMessage(errmsg.exists()).custom(cstmval.passwordConfirmation()),
 ];
 
+validations.signIn = [
+	check("username")
+		.exists()
+		.bail()
+		.withMessage(errmsg.exists())
+		.isLength({ min: 8, max: 16 })
+		.bail()
+		.withMessage(errmsg.isLength({ min: 8, max: 16 })),
+	check("password")
+		.exists()
+		.bail()
+		.withMessage(errmsg.exists())
+		.isLength({ min: 8, max: 32 })
+		.bail()
+		.withMessage(errmsg.isLength({ min: 8, max: 32 })),
+];
+
 validations.newVerification = [
 	check("username")
 		.exists()
