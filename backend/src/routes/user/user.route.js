@@ -7,7 +7,10 @@ const { dynamic_messages: errmsg, custom_validators: cstmval } = require("@root/
 const { check, validationResult } = require("express-validator");
 const { generateVerificationUrl } = require("@root/src/utils/verification-url-gen");
 const { transporter: mailTransporter } = require("@root/src/utils/mailer");
+const { validate } = require("@root/src/middlewares/validation-check");
+const crypto = require("crypto");
 
+const bcryptSaltRounds = 10;
 const userRoute = express.Router();
 const utils = {};
 const validations = {};
@@ -140,18 +143,12 @@ validations.newVerification = [
 ];
 
 implementations.signUp = function (req, res) {
-	const errors = validationResult(req);
-	if (errors.isEmpty() === false) {
-		res.json({ errors: errors.array() });
-		return;
-	}
-
 	const uuid = uuidv1();
 
 	const uuidBinaryValue = utils.uuidToBinary(uuid);
 	const { firstname, lastname, birth_date, gender, email, username, password } = req.body;
 
-	bcrypt.hash(password, 10).then((hash) => {
+	bcrypt.hash(password, bcryptSaltRounds).then((hash) => {
 		let escapedValues = mysql.escape([firstname, lastname, birth_date, gender, email, username, hash]);
 		let query = `INSERT INTO user VALUES('${uuidBinaryValue}', ${escapedValues}, false)`;
 
