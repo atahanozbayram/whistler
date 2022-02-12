@@ -280,7 +280,47 @@ implementations.newVerification = function (req, res) {
 	);
 };
 
-userRoute.post("/signup", validations.signUp, implementations.signUp);
-userRoute.post("/new-verification", validations.newVerification, implementations.newVerification);
+implementations.signIn = function (req, res) {
+	let { username, password } = req.body;
+
+	mysql_connection.query(
+		`SELECT uuid, username, password_hash FROM user WHERE username = ${mysql.escape(username)} and verified = true`,
+		function (error, results) {
+			if (error !== null) {
+				res.status(500).json({ message: "some database error occured!" });
+				return;
+			}
+
+			if (results.length !== 0) {
+				let { uuid: user_uuid, password_hash } = results[0];
+				if (bcrypt.compareSync(password, password_hash) === true) {
+					let token = crypto.randomBytes(64).toString("hex");
+					mysql_connection.query(
+						`INSERT INTO authentication_token (user_uuid, token) VALUES ('${user_uuid}', '${token}')`,
+						function (error) {
+							if (error !== null) {
+								console.error(error);
+								res.status(500).json({ message: "Some database error occured." });
+								return;
+							}
+
+							res.status(200).json({
+								message: "valid credentials.",
+								token: token,
+							});
+						}
+					);
+					return;
+				}
+			}
+
+			res.status(401).json({ message: "invalid credentials." });
+		}
+	);
+};
+
+userRoute.post("/sign-up", validations.signUp, validate, implementations.signUp);
+userRoute.post("/sign-in", validations.signIn, validate, implementations.signIn);
+userRoute.post("/new-verification", validations.newVerification, validate, implementations.newVerification);
 userRoute.get("/verify/:verificationUrl", implementations.verify);
 module.exports = { userRoute };
