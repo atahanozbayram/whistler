@@ -158,11 +158,11 @@ implementations.signUp = function (req, res) {
 		mysql_connection.query(query, function (error) {
 			if (error !== null) {
 				console.log(error);
-				res.status(500).send("some database errors occured!");
+				res.status(500).json({ message: "some database errors occured!" });
 				return;
 			}
 
-			res.status(201).send("user account is created successfully. verification email will be sent.");
+			res.status(201).json({ message: "user account is created successfully. verification email will be sent." });
 
 			const verificationUrl = generateVerificationUrl(uuid);
 			utils
@@ -186,7 +186,7 @@ implementations.signUp = function (req, res) {
 						console.log("email has been sent to " + email);
 					});
 				})
-				.catch((errormsg) => res.status(500).send(errormsg));
+				.catch((errormsg) => res.status(500).json({ message: errormsg }));
 		});
 	});
 };
@@ -199,12 +199,12 @@ implementations.verify = function (req, res) {
 	mysql_connection.query(`SELECT * FROM verification_url WHERE url = ${verificationUrl}`, function (error, results) {
 		if (error !== null) {
 			console.error(error);
-			res.status(500).send("some database errors occured!");
+			res.status(500).json({ message: "some database errors occured!" });
 			return;
 		}
 
 		if (results.length === 0) {
-			res.status(404).send("verification url does not exist or invalid.");
+			res.status(404).json({ message: "verification url does not exist or invalid." });
 			return;
 		}
 
@@ -214,7 +214,7 @@ implementations.verify = function (req, res) {
 		mysql_connection.query(`UPDATE user SET verified = 1 WHERE uuid = '${user_uuid}'`, function (error) {
 			if (error !== null) {
 				console.error(error);
-				res.status(500).send("some database errors occured!");
+				res.status(500).json({ message: "some database errors occured!" });
 				return;
 			}
 
@@ -232,7 +232,7 @@ implementations.verify = function (req, res) {
 				}
 			});
 
-			res.status(200).send("verification is complete.");
+			res.status(200).json({ message: "verification is complete." });
 		});
 	});
 };
@@ -278,7 +278,7 @@ implementations.newVerification = function (req, res) {
 				});
 			}
 
-			res.status(200).send("if username and email exists an email will be sent for verification.");
+			res.status(200).json({ message: "if username and email exists an email will be sent for verification." });
 		}
 	);
 };
