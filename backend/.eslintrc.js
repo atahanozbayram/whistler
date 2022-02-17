@@ -3,6 +3,8 @@ module.exports = {
 		node: true,
 		commonjs: true,
 		es2021: true,
+		jest: true,
+		"jest/globals": true,
 	},
 	extends: ["eslint:recommended", "prettier"],
 	parserOptions: {
@@ -11,4 +13,5 @@ module.exports = {
 	rules: {
 		// "comma-dangle": ["warn", "only-multiline"]
 	},
+	plugins: ["jest"],
 };
