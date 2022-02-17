@@ -1,29 +1,42 @@
 {
-  "name": "Whistler",
-  "version": "1.0.0",
-  "description": "Backend for whistler. A twitter-like social media platform.",
-  "main": "src/index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "MIT",
-  "dependencies": {
-    "bcrypt": "^5.0.1",
-    "body-parser": "^1.19.1",
-    "dotenv": "^14.3.0",
-    "express": "^4.17.2",
-    "express-validator": "^6.14.0",
-    "module-alias": "^2.2.2",
-    "mysql": "^2.18.1",
-    "nodemailer": "^6.7.2",
-    "uuid": "^8.3.2"
-  },
-  "devDependencies": {
-    "eslint": "^8.7.0",
-    "eslint-config-prettier": "^8.3.0"
-  },
-  "_moduleAliases": {
-    "@root": "."
-  }
+	"name": "Whistler",
+	"version": "1.0.0",
+	"description": "Backend for whistler. A twitter-like social media platform.",
+	"main": "src/index.js",
+	"scripts": {
+		"test": "jest"
+	},
+	"author": "",
+	"license": "MIT",
+	"dependencies": {
+		"bcrypt": "^5.0.1",
+		"body-parser": "^1.19.1",
+		"dotenv": "^14.3.0",
+		"express": "^4.17.2",
+		"express-validator": "^6.14.0",
+		"jsonwebtoken": "^8.5.1",
+		"module-alias": "^2.2.2",
+		"mysql": "^2.18.1",
+		"nodemailer": "^6.7.2",
+		"uuid": "^8.3.2"
+	},
+	"devDependencies": {
+		"@jest/globals": "^27.5.1",
+		"@types/jest": "^27.4.0",
+		"eslint": "^8.7.0",
+		"eslint-config-prettier": "^8.3.0",
+		"eslint-plugin-jest": "^26.1.1",
+		"jest": "^27.5.1",
+		"module-alias-jest": "^0.0.3",
+		"rewire": "^6.0.0",
+		"sinon": "^13.0.1",
+		"supertest": "^6.2.2"
+	},
+	"_moduleAliases": {
+		"@root": ".",
+		"@middlewares": "src/middlewares/",
+		"@routes": "src/routes/",
+		"@tests": "src/tests/",
+		"@utils": "src/utils/"
+	}
 }
