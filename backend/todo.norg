@@ -4,12 +4,15 @@
 - MySQL
 
 * Todo
-  - [-] Plan out the workings of the project.
-  - [-] Plan out the database.
-  - [x]  Plan out the user table.
-   - [x] Find out how to implement unique user id in MySQL.
-   - [x] Create a simple gender table.
-
+	- [-]   Implement log in and log out system
+	- [ ] Learn about error loggin system. Also maybe logging request and responses.
+				here is a link to resource that may help: https://blog.appsignal.com/2021/11/03/designing-error-messages-and-a-logging-strategy-in-nodejs.html
+	- [ ] Learn about mysql escaping. single quotes being added is probably a good thing.
+ 				Refer to mysql npm page and refactor inconsistent code.
+ 	- [ ] Refactor sql queries to get only one result by using LIMIT keyword			
 
 * What features project must have?
-  - [ ] User account 
+  - [x] User account 
+	- [ ] log in and log out
+		- [x]  which way to implement authentication
+
