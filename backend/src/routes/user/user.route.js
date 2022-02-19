@@ -26,7 +26,9 @@ utils.insertValidationUrl = function (user_uuidBinary, url, user_email) {
 		let escapedValues = mysql.escape([url, user_email]);
 
 		mysql_connection.query(
-			`INSERT INTO verification_url (user_uuid, url, user_email) VALUES ('${user_uuidBinary}', ${escapedValues})`,
+			`INSERT INTO verification_url (user_uuid, url, user_email) VALUES (${mysql.escape(
+				user_uuidBinary
+			)}, ${escapedValues})`,
 			function (error, results) {
 				if (error !== null) {
 					console.error(error);
@@ -150,7 +152,7 @@ implementations.signUp = function (req, res) {
 
 	bcrypt.hash(password, bcryptSaltRounds).then((hash) => {
 		let escapedValues = mysql.escape([firstname, lastname, birth_date, gender, email, username, hash]);
-		let query = `INSERT INTO user VALUES('${uuidBinaryValue}', ${escapedValues}, false)`;
+		let query = `INSERT INTO user VALUES(${mysql.escape(uuidBinaryValue)}, ${escapedValues}, false)`;
 
 		mysql_connection.query(query, function (error) {
 			if (error !== null) {
@@ -208,26 +210,32 @@ implementations.verify = function (req, res) {
 		let user_uuid = results[0].user_uuid;
 		let user_email = results[0].user_email;
 
-		mysql_connection.query(`UPDATE user SET verified = 1 WHERE uuid = '${user_uuid}'`, function (error) {
+		mysql_connection.query(`UPDATE user SET verified = 1 WHERE uuid = ${mysql.escape(user_uuid)}`, function (error) {
 			if (error !== null) {
 				console.error(error);
 				res.status(500).json({ message: "some database errors occured!" });
 				return;
 			}
 
-			mysql_connection.query(`DELETE FROM user WHERE email = '${user_email}' and verified = 0`, function (error) {
-				if (error !== null) {
-					console.error(error);
-					return;
+			mysql_connection.query(
+				`DELETE FROM user WHERE email = ${mysql.escape(user_email)} and verified = 0`,
+				function (error) {
+					if (error !== null) {
+						console.error(error);
+						return;
+					}
 				}
-			});
+			);
 
-			mysql_connection.query(`DELETE FROM verification_url WHERE user_email = '${user_email}'`, function (error) {
-				if (error !== null) {
-					console.error(error);
-					return;
+			mysql_connection.query(
+				`DELETE FROM verification_url WHERE user_email = ${mysql.escape(user_email)}`,
+				function (error) {
+					if (error !== null) {
+						console.error(error);
+						return;
+					}
 				}
-			});
+			);
 
 			res.status(200).json({ message: "verification is complete." });
 		});
@@ -296,7 +304,9 @@ implementations.signIn = function (req, res) {
 				if (bcrypt.compareSync(password, password_hash) === true) {
 					let token = crypto.randomBytes(64).toString("hex");
 					mysql_connection.query(
-						`INSERT INTO authentication_token (user_uuid, token) VALUES ('${user_uuid}', '${token}')`,
+						`INSERT INTO authentication_token (user_uuid, token) VALUES (${mysql.escape(user_uuid)}, ${mysql.escape(
+							token
+						)})`,
 						function (error) {
 							if (error !== null) {
 								console.error(error);
