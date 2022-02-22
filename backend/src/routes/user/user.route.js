@@ -14,7 +14,7 @@ const bcryptSaltRounds = 10;
 const userRoute = express.Router();
 const utils = {};
 const validations = {};
-const implementations = {};
+const controllers = {};
 
 utils.uuidToBinary = function (uuid) {
 	const uuidBinaryValue = Buffer.from(uuid.replace("-", ""), "hex");
@@ -144,7 +144,7 @@ validations.newVerification = [
 	check("email").exists().bail().withMessage(errmsg.exists()).isEmail().bail().withMessage(errmsg.isEmail()),
 ];
 
-implementations.signUp = function (req, res) {
+controllers.signUp = function (req, res) {
 	const uuid = uuidv1();
 
 	const uuidBinaryValue = utils.uuidToBinary(uuid);
@@ -190,7 +190,7 @@ implementations.signUp = function (req, res) {
 	});
 };
 
-implementations.verify = function (req, res) {
+controllers.verify = function (req, res) {
 	let verificationUrl = req.params.verificationUrl;
 
 	verificationUrl = mysql.escape(verificationUrl);
@@ -242,7 +242,7 @@ implementations.verify = function (req, res) {
 	});
 };
 
-implementations.newVerification = function (req, res) {
+controllers.newVerification = function (req, res) {
 	let username = req.body.username;
 	let email = req.body.email;
 
@@ -288,7 +288,7 @@ implementations.newVerification = function (req, res) {
 	);
 };
 
-implementations.signIn = function (req, res) {
+controllers.signIn = function (req, res) {
 	let { username, password } = req.body;
 
 	mysql_connection.query(
@@ -329,8 +329,8 @@ implementations.signIn = function (req, res) {
 	);
 };
 
-userRoute.post("/sign-up", validations.signUp, validate, implementations.signUp);
-userRoute.post("/sign-in", validations.signIn, validate, implementations.signIn);
-userRoute.post("/new-verification", validations.newVerification, validate, implementations.newVerification);
-userRoute.get("/verify/:verificationUrl", implementations.verify);
+userRoute.post("/sign-up", validations.signUp, validate, controllers.signUp);
+userRoute.post("/sign-in", validations.signIn, validate, controllers.signIn);
+userRoute.post("/new-verification", validations.newVerification, validate, controllers.newVerification);
+userRoute.get("/verify/:verificationUrl", controllers.verify);
 module.exports = { userRoute };
