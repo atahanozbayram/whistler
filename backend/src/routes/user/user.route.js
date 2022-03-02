@@ -8,8 +8,7 @@ const { check } = require("express-validator");
 const { generateVerificationUrl } = require("@root/src/utils/verification-url-gen");
 const { transporter: mailTransporter } = require("@root/src/utils/mailer");
 const { validate } = require("@root/src/middlewares/validation-check");
-const crypto = require("crypto");
-const jwt = require("jsonwebtoken");
+const { generateRefreshToken, insertRefreshTokenToDB } = require("@utils/refresh-token");
 
 const bcryptSaltRounds = 10;
 const userRoute = express.Router();
@@ -303,26 +302,17 @@ controllers.signIn = function (req, res) {
 			if (results.length !== 0) {
 				let { uuid: user_uuid, password_hash } = results[0];
 				if (bcrypt.compareSync(password, password_hash) === true) {
-					let token_value = crypto.randomBytes(64).toString("hex");
-					let refresh_token = jwt.sign({ value: token_value }, process.env["JWT_SECRET"], { expiresIn: "90 days" });
-					const decoded = jwt.verify(refresh_token, process.env["JWT_SECRET"]);
-					const issued_at = decoded.iat;
-					const expires_at = decoded.exp;
-					const used = 0;
-
-					const escaped_values = mysql.escape([user_uuid, token_value, issued_at, expires_at, used]);
-
-					mysql_connection.query(
-						`INSERT INTO refresh_token (user_uuid, token, issued_at, expires_at, used) VALUES (${escaped_values})`,
-						function (err) {
-							if (Boolean(err) !== false) {
-								res.status(500).json({ message: "some database error occured!" });
+					const refresh_token = generateRefreshToken();
+					insertRefreshTokenToDB(user_uuid, refresh_token)
+						.then((resolved) => {
+							if (resolved.status === 200) {
+								res.status(200).json({ message: "signed in successfully.", refresh_token });
 								return;
 							}
-
-							res.status(200).json({ message: "login operation successful.", refresh_token });
-						}
-					);
+						})
+						.catch(() => {
+							res.status(500).json({ message: "some database errors occured" });
+						});
 					return;
 				}
 			}
