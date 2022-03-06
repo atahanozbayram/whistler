@@ -1,0 +1,15 @@
+{
+	"compilerOptions": {
+		"baseUrl": "./",
+		"paths": {
+			"@root/*": ["./*"],
+			"@pages/*": ["./src/pages/*"],
+			"@shared/*": ["./src/shared/*"],
+			"@public/*": ["./public/*"]
+		}
+	},
+	"exclude": ["node_modules"],
+	"typeAcquisition": {
+		"include": ["jest"]
+	}
+}
