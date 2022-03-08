@@ -9,6 +9,7 @@ const { generateVerificationUrl } = require("@root/src/utils/verification-url-ge
 const { transporter: mailTransporter } = require("@root/src/utils/mailer");
 const { validate } = require("@root/src/middlewares/validation-check");
 const { generateRefreshToken, insertRefreshTokenToDB } = require("@utils/refresh-token");
+const jwt = require("jsonwebtoken");
 
 const bcryptSaltRounds = 10;
 const userRoute = express.Router();
@@ -300,6 +301,7 @@ controllers.signIn = function (req, res) {
 		)} and verified = true LIMIT 1`,
 		function (error, results) {
 			if (error !== null) {
+				console.error("error: %o", error);
 				res.status(500).json({ message: "some database error occured!" });
 				return;
 			}
@@ -307,7 +309,8 @@ controllers.signIn = function (req, res) {
 			if (results.length !== 0) {
 				let { uuid: user_uuid, password_hash } = results[0];
 				if (bcrypt.compareSync(password, password_hash) === true) {
-					const refresh_token = generateRefreshToken();
+					const refresh_token = jwt.decode(generateRefreshToken());
+
 					insertRefreshTokenToDB(user_uuid, refresh_token)
 						.then((resolved) => {
 							if (resolved.status === 200) {
@@ -315,7 +318,8 @@ controllers.signIn = function (req, res) {
 								return;
 							}
 						})
-						.catch(() => {
+						.catch((error) => {
+							console.error("error: %o", error);
 							res.status(500).json({ message: "some database errors occured" });
 						});
 					return;
