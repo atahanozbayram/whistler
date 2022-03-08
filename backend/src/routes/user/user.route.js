@@ -195,51 +195,54 @@ controllers.verify = function (req, res) {
 
 	verificationUrl = mysql.escape(verificationUrl);
 
-	mysql_connection.query(`SELECT * FROM verification_url WHERE url = ${verificationUrl}`, function (error, results) {
-		if (error !== null) {
-			console.error(error);
-			res.status(500).json({ message: "some database errors occured!" });
-			return;
-		}
-
-		if (results.length === 0) {
-			res.status(404).json({ message: "verification url does not exist or invalid." });
-			return;
-		}
-
-		let user_uuid = results[0].user_uuid;
-		let user_email = results[0].user_email;
-
-		mysql_connection.query(`UPDATE user SET verified = 1 WHERE uuid = ${mysql.escape(user_uuid)}`, function (error) {
+	mysql_connection.query(
+		`SELECT * FROM verification_url WHERE url = ${verificationUrl} LIMIT 1`,
+		function (error, results) {
 			if (error !== null) {
 				console.error(error);
 				res.status(500).json({ message: "some database errors occured!" });
 				return;
 			}
 
-			mysql_connection.query(
-				`DELETE FROM user WHERE email = ${mysql.escape(user_email)} and verified = 0`,
-				function (error) {
-					if (error !== null) {
-						console.error(error);
-						return;
-					}
-				}
-			);
+			if (results.length === 0) {
+				res.status(404).json({ message: "verification url does not exist or invalid." });
+				return;
+			}
 
-			mysql_connection.query(
-				`DELETE FROM verification_url WHERE user_email = ${mysql.escape(user_email)}`,
-				function (error) {
-					if (error !== null) {
-						console.error(error);
-						return;
-					}
-				}
-			);
+			let user_uuid = results[0].user_uuid;
+			let user_email = results[0].user_email;
 
-			res.status(200).json({ message: "verification is complete." });
-		});
-	});
+			mysql_connection.query(`UPDATE user SET verified = 1 WHERE uuid = ${mysql.escape(user_uuid)}`, function (error) {
+				if (error !== null) {
+					console.error(error);
+					res.status(500).json({ message: "some database errors occured!" });
+					return;
+				}
+
+				mysql_connection.query(
+					`DELETE FROM user WHERE email = ${mysql.escape(user_email)} and verified = 0`,
+					function (error) {
+						if (error !== null) {
+							console.error(error);
+							return;
+						}
+					}
+				);
+
+				mysql_connection.query(
+					`DELETE FROM verification_url WHERE user_email = ${mysql.escape(user_email)}`,
+					function (error) {
+						if (error !== null) {
+							console.error(error);
+							return;
+						}
+					}
+				);
+
+				res.status(200).json({ message: "verification is complete." });
+			});
+		}
+	);
 };
 
 controllers.newVerification = function (req, res) {
