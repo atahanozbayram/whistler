@@ -21,6 +21,7 @@ const insertRefreshTokenToDB = function (user_uuid, token) {
 			`INSERT INTO refresh_token (user_uuid, token, issued_at, expires_at, used) VALUES (${escaped_values})`,
 			function (err) {
 				if (err) {
+					console.error("error: %o", err);
 					reject({ status: 500, message: "some database errors occured!" });
 					return;
 				}
