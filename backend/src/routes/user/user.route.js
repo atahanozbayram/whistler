@@ -295,7 +295,9 @@ controllers.signIn = function (req, res) {
 	let { username, password } = req.body;
 
 	mysql_connection.query(
-		`SELECT uuid, username, password_hash FROM user WHERE username = ${mysql.escape(username)} and verified = true`,
+		`SELECT uuid, username, password_hash FROM user WHERE username = ${mysql.escape(
+			username
+		)} and verified = true LIMIT 1`,
 		function (error, results) {
 			if (error !== null) {
 				res.status(500).json({ message: "some database error occured!" });
