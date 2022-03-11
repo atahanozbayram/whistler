@@ -36,7 +36,7 @@
 		"@root": ".",
 		"@middlewares": "src/middlewares/",
 		"@routes": "src/routes/",
-		"@tests": "src/tests/",
-		"@utils": "src/utils/"
+		"@tests": "tests/",
+		"@shared": "src/shared/"
 	}
 }

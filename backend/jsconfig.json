@@ -5,8 +5,8 @@
 			"@root/*": ["./*"],
 			"@middlewares/*": ["./src/middlewares/*"],
 			"@routes/*": ["./src/routes/*"],
-			"@tests/*": ["./src/middlewares/*"],
-			"@utils/*": ["./src/utils/*"]
+			"@tests/*": ["./tests/*"],
+			"@shared/*": ["./src/shared/*"]
 		}
 	},
 	"exclude": ["node_modules"],
