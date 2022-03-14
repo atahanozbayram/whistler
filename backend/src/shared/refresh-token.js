@@ -1,7 +1,7 @@
 require("dotenv").config();
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
-const { connection } = require("@utils/database-connection");
+const { connection } = require("@shared/database-connection");
 
 const generateRefreshToken = function () {
 	const token_value = crypto.randomBytes(64).toString("hex");
@@ -10,23 +10,25 @@ const generateRefreshToken = function () {
 	return refresh_token;
 };
 
-const insertRefreshTokenToDB = function (user_uuid, token) {
+const insertRefreshTokenToDB = function (user_uuid) {
 	return new Promise((resolve, reject) => {
-		const token_value = token.token;
-		const issued_at = token.iat;
-		const expires_at = token.exp;
+		const refresh_token = generateRefreshToken();
+		const tokenJSON = jwt.verify();
+
+		const token_value = tokenJSON.token;
+		const issued_at = tokenJSON.iat;
+		const expires_at = tokenJSON.exp;
 
 		const escaped_values = connection.escape([user_uuid, token_value, issued_at, expires_at, 0]);
 		connection.query(
 			`INSERT INTO refresh_token (user_uuid, token, issued_at, expires_at, used) VALUES (${escaped_values})`,
 			function (err) {
 				if (err) {
-					console.error("error: %o", err);
-					reject({ status: 500, message: "some database errors occured!" });
+					reject(err);
 					return;
 				}
 
-				resolve({ status: 200, messsage: "refresh_token is created." });
+				resolve(refresh_token);
 			}
 		);
 	});

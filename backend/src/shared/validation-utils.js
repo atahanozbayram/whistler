@@ -1,5 +1,5 @@
 const mysql = require("mysql");
-const { connection: mysql_connection } = require("@root/src/utils/database-connection");
+const { connection: mysql_connection } = require("@root/src/shared/database-connection");
 const dynamic_messages = {};
 const custom_validators = {};
 
