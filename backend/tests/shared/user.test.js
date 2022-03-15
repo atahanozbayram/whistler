@@ -38,4 +38,21 @@ describe("user.js tests", () => {
 				done(err);
 			});
 	});
+
+	test("getUser gets user with given key value pairs", (done) => {
+		addUser(exampleUser)
+			.then((userInfo) => {
+				getUser({ uuid: userInfo.uuid }, 1)
+					.then((results) => {
+						expect(results.length).not.toBe(0);
+						done();
+					})
+					.catch((error) => {
+						done(error);
+					});
+			})
+			.catch((error) => {
+				done(error);
+			});
+	});
 });
