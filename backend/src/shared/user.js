@@ -1,6 +1,6 @@
 const { v1: uuidv1 } = require("uuid");
 const bcrypt = require("bcrypt");
-const { connection: db_connection } = require("@shared/database-connection");
+const { connection: mysql_connection } = require("@shared/database-connection");
 const mysql = require("mysql");
 
 const uuidToBinary = function (uuid) {
@@ -29,7 +29,7 @@ const addUser = function ({ firstname, lastname, birth_date, gender, email, user
 				verified,
 			]);
 
-			db_connection.query(
+			mysql_connection.query(
 				`INSERT INTO user (uuid, firstname, lastname, birth_date, gender, email, username, password_hash, verified) VALUES (${escapedValues})`,
 				function (error) {
 					if (error) {
@@ -49,6 +49,7 @@ const addUser = function ({ firstname, lastname, birth_date, gender, email, user
 						verified,
 					};
 					resolve(user_information);
+					return;
 				}
 			);
 		});
