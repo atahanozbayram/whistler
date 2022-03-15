@@ -1,6 +1,5 @@
 require("@shared/config").config();
 require("module-alias-jest/register");
-const { addUser } = require("@shared/user");
 const { connection: mysql_connection } = require("@shared/database-connection");
 
 beforeAll(() => {});
