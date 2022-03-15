@@ -26,7 +26,6 @@ const getUser = function (
 
 		let query = `SELECT * FROM user WHERE ${where}${limit ? ` LIMIT ${limit}` : ""}`;
 
-		console.log("query: %o", query);
 		mysql_connection.query(query, function (error, results) {
 			if (error) {
 				reject(error);
