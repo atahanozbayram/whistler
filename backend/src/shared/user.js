@@ -8,6 +8,36 @@ const uuidToBinary = function (uuid) {
 	return uuidBinaryValue;
 };
 
+const getUser = function (
+	// eslint-disable-next-line no-unused-vars
+	{ uuid, firstname, lastname, birth_date, gender, email, username, password, verified = 1 },
+	// eslint-disable-next-line no-unused-vars
+	limit
+) {
+	return new Promise((resolve, reject) => {
+		const userInfo = arguments[0];
+
+		const where = Object.entries(userInfo)
+			.map(([key, value]) => {
+				if (key === "uuid") value = uuidToBinary(value);
+				return `${mysql.escapeId(key)}=${mysql.escape(value)}`;
+			})
+			.join(" and ");
+
+		let query = `SELECT * FROM user WHERE ${where}${limit ? ` LIMIT ${limit}` : ""}`;
+
+		console.log("query: %o", query);
+		mysql_connection.query(query, function (error, results) {
+			if (error) {
+				reject(error);
+				return;
+			}
+
+			resolve(results);
+		});
+	});
+};
+
 // Add user to database
 const addUser = function ({ firstname, lastname, birth_date, gender, email, username, password, verified = 0 }) {
 	return new Promise((resolve, reject) => {
@@ -58,4 +88,5 @@ const addUser = function ({ firstname, lastname, birth_date, gender, email, user
 
 module.exports = {
 	addUser,
+	getUser,
 };
