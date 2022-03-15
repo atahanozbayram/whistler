@@ -4,7 +4,7 @@ const { connection: db_connection } = require("@shared/database-connection");
 const mysql = require("mysql");
 
 const uuidToBinary = function (uuid) {
-	const uuidBinaryValue = Buffer.from(uuid.replace("-", ""), "hex");
+	const uuidBinaryValue = Buffer.from(uuid.replaceAll("-", ""), "hex");
 	return uuidBinaryValue;
 };
 
