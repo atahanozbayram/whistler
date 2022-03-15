@@ -1,8 +1,8 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const mysql = require("mysql");
-const { connection: mysql_connection } = require("@root/src/utils/database-connection");
-const { generateRefreshToken, insertRefreshTokenToDB } = require("@utils/refresh-token");
+const { connection: mysql_connection } = require("@root/src/shared/database-connection");
+const { insertRefreshTokenToDB } = require("@shared/refresh-token");
 
 const jwt_secret = process.env.JWT_SECRET;
 const generateAccessToken = function (username, expiresIn = 60) {
