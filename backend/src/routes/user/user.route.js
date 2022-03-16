@@ -1,14 +1,14 @@
 const mysql = require("mysql");
 const { v1: uuidv1 } = require("uuid");
-const { connection: mysql_connection } = require("@root/src/utils/database-connection");
+const { connection: mysql_connection } = require("@root/src/shared/database-connection");
 const bcrypt = require("bcrypt");
 const express = require("express");
-const { dynamic_messages: errmsg, custom_validators: cstmval } = require("@root/src/utils/validation-utils");
+const { dynamic_messages: errmsg, custom_validators: cstmval } = require("@root/src/shared/validation-utils");
 const { check } = require("express-validator");
-const { generateVerificationUrl } = require("@root/src/utils/verification-url-gen");
-const { transporter: mailTransporter } = require("@root/src/utils/mailer");
+const { generateVerificationUrl } = require("@root/src/shared/verification-url-gen");
+const { transporter: mailTransporter } = require("@root/src/shared/mailer");
 const { validate } = require("@root/src/middlewares/validation-check");
-const { generateRefreshToken, insertRefreshTokenToDB } = require("@utils/refresh-token");
+const { generateRefreshToken, insertRefreshTokenToDB } = require("@shared/refresh-token");
 const jwt = require("jsonwebtoken");
 
 const bcryptSaltRounds = 10;
