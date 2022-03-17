@@ -9,6 +9,17 @@ afterEach(() => {
 	jest.useRealTimers();
 });
 
+const exampleUser = {
+	firstname: "Atahan",
+	lastname: "Ozbayram",
+	email: "atahan_ozbayram@hotmail.com",
+	gender: 2,
+	password: "StrongPassword!",
+	username: "username1",
+	birth_date: "1999-07-20",
+	verified: 1,
+};
+
 describe("generateRefreshToken tests", () => {
 	const ms = require("ms");
 	const { generateRefreshToken } = require("@shared/refresh-token");
@@ -34,17 +45,6 @@ describe("generateRefreshToken tests", () => {
 });
 
 describe("insertRefreshTokenToDB tests", () => {
-	const exampleUser = {
-		firstname: "Atahan",
-		lastname: "Ozbayram",
-		email: "atahan_ozbayram@hotmail.com",
-		gender: 2,
-		password: "StrongPassword!",
-		username: "username1",
-		birth_date: "1999-07-20",
-		verified: 1,
-	};
-
 	const { insertRefreshTokenToDB } = require("@shared/refresh-token");
 	const { addUser } = require("@shared/user");
 	const jwt = require("jsonwebtoken");
