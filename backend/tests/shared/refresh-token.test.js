@@ -85,4 +85,13 @@ describe("queryRefreshTokenValidity tests", () => {
 			})
 			.catch((error) => done(error));
 	});
+
+	test("fails to verify when token is not in the database", (done) => {
+		const r_token = generateRefreshToken();
+
+		queryRefreshTokenValidity(r_token).catch((error) => {
+			expect(error).toBeTruthy();
+			done();
+		});
+	});
 });
