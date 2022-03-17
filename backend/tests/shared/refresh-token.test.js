@@ -32,3 +32,35 @@ describe("generateRefreshToken tests", () => {
 		});
 	});
 });
+
+describe("insertRefreshTokenToDB tests", () => {
+	const exampleUser = {
+		firstname: "Atahan",
+		lastname: "Ozbayram",
+		email: "atahan_ozbayram@hotmail.com",
+		gender: 2,
+		password: "StrongPassword!",
+		username: "username1",
+		birth_date: "1999-07-20",
+		verified: 1,
+	};
+
+	const { insertRefreshTokenToDB } = require("@shared/refresh-token");
+	const { addUser } = require("@shared/user");
+	const jwt = require("jsonwebtoken");
+
+	test("inserts refresh token into db successfully and returns verifiable token", (done) => {
+		addUser(exampleUser)
+			.then((userInfo) => {
+				insertRefreshTokenToDB(userInfo.uuid)
+					.then((r_token) => {
+						jwt.verify(r_token, process.env.JWT_SECRET, function (err) {
+							expect(err).toBeFalsy();
+							done();
+						});
+					})
+					.catch((error) => done(error));
+			})
+			.catch((error) => done(error));
+	});
+});
