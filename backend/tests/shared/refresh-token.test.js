@@ -64,3 +64,25 @@ describe("insertRefreshTokenToDB tests", () => {
 			.catch((error) => done(error));
 	});
 });
+
+describe("queryRefreshTokenValidity tests", () => {
+	const { addUser } = require("@shared/user");
+	const { insertRefreshTokenToDB, queryRefreshTokenValidity } = require("@shared/refresh-token");
+
+	test("validates refresh token from database", (done) => {
+		addUser(exampleUser)
+			.then((userInfo) => {
+				insertRefreshTokenToDB(userInfo.uuid)
+					.then((refresh_token) => {
+						queryRefreshTokenValidity(refresh_token)
+							.then((results) => {
+								expect(results).toBeTruthy();
+								done();
+							})
+							.catch((error) => done(error));
+					})
+					.catch((error) => done(error));
+			})
+			.catch((error) => done(error));
+	});
+});
