@@ -3,9 +3,9 @@ const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const { connection } = require("@shared/database-connection");
 
-const generateRefreshToken = function () {
+const generateRefreshToken = function (expiresIn = "90 days") {
 	const token_value = crypto.randomBytes(64).toString("hex");
-	const refresh_token = jwt.sign({ token: token_value }, process.env["JWT_SECRET"], { expiresIn: "90 days" });
+	const refresh_token = jwt.sign({ token: token_value }, process.env["JWT_SECRET"], { expiresIn: expiresIn });
 
 	return refresh_token;
 };
