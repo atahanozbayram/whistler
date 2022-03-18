@@ -37,4 +37,29 @@ const insertRefreshTokenToDB = function (user_uuid) {
 	});
 };
 
-module.exports = { generateRefreshToken, insertRefreshTokenToDB };
+const queryRefreshTokenValidity = function (refresh_token) {
+	return new Promise((resolve, reject) => {
+		jwt.verify(refresh_token, process.env.JWT_SECRET, function (error, decoded) {
+			if (error) {
+				reject(error);
+				return;
+			}
+
+			connection.query(
+				`SELECT u.uuid, u.username, rt.token, rt.used FROM refresh_token AS rt INNER JOIN user AS u ON rt.user_uuid=u.uuid WHERE rt.token = ${mysql.escape(
+					decoded.token
+				)} and rt.used = 0 LIMIT 1`,
+				function (error, results) {
+					if (error) {
+						reject(error);
+						return;
+					}
+
+					if (results.length !== 0) resolve(results);
+
+					reject("token doesn't exists in the database");
+				}
+			);
+		});
+	});
+};

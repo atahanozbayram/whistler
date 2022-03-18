@@ -65,6 +65,29 @@ describe("insertRefreshTokenToDB tests", () => {
 	});
 });
 
+describe("getRefreshToken related tests", () => {
+	const { addUser } = require("@shared/user");
+	const { insertRefreshTokenToDB, getRefreshToken } = require("@shared/refresh-token");
+
+	test("gets the filtered refresh token or tokens", (done) => {
+		addUser(exampleUser)
+			.then((userInfo) => {
+				insertRefreshTokenToDB(userInfo.uuid)
+					.then((r_token) => {
+						getRefreshToken({ token: r_token })
+							.then((results) => {
+								expect(results).toBeTruthy();
+								expect(results.length).not.toBeUndefined();
+								done();
+							})
+							.catch((error) => done(error));
+					})
+					.catch((error) => done(error));
+			})
+			.catch((error) => done(error));
+	});
+});
+
 describe("queryRefreshTokenValidity tests", () => {
 	const { addUser } = require("@shared/user");
 	const { insertRefreshTokenToDB, queryRefreshTokenValidity } = require("@shared/refresh-token");
