@@ -104,3 +104,35 @@ const queryRefreshTokenValidity = function (refresh_token) {
 		});
 	});
 };
+
+// Increase the value of used column of refresh_token in database
+const updateRefreshTokenUsed = function (refresh_token) {
+	return new Promise((resolve, reject) => {
+		jwt.verify(refresh_token, process.env.JWT_SECRET, function (error, decoded) {
+			if (error) {
+				reject(error);
+				return;
+			}
+
+			connection.query(
+				`UPDATE refresh_token SET used = used + 1 WHERE token = ${mysql.escape(decoded.token)} LIMIT 1`,
+				function (error) {
+					if (error) {
+						reject(error);
+						return;
+					}
+
+					resolve(refresh_token);
+				}
+			);
+		});
+	});
+};
+
+module.exports = {
+	generateRefreshToken,
+	insertRefreshTokenToDB,
+	queryRefreshTokenValidity,
+	updateRefreshTokenUsed,
+	getRefreshToken,
+};
