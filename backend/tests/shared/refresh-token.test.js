@@ -118,3 +118,26 @@ describe("queryRefreshTokenValidity tests", () => {
 		});
 	});
 });
+
+describe("updateRefreshTokenUsed tests", () => {
+	const {
+		updateRefreshTokenUsed,
+		insertRefreshTokenToDB,
+		queryRefreshTokenValidity,
+		getRefreshToken,
+	} = require("@shared/refresh-token");
+	const { addUser } = require("@shared/user");
+
+	test("updates refresh tokens used column value", async () => {
+		expect.assertions(2);
+		const userInfo = await addUser(exampleUser);
+		const r_token = await insertRefreshTokenToDB(userInfo.uuid);
+		let results = await queryRefreshTokenValidity(r_token);
+
+		expect(results[0].used).toBe(0);
+
+		await updateRefreshTokenUsed(r_token);
+		results = await getRefreshToken({ token: r_token });
+		expect(results[0].used).not.toBe(0);
+	});
+});
