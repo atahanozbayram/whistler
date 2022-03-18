@@ -90,7 +90,7 @@ describe("getRefreshToken related tests", () => {
 
 describe("queryRefreshTokenValidity tests", () => {
 	const { addUser } = require("@shared/user");
-	const { insertRefreshTokenToDB, queryRefreshTokenValidity } = require("@shared/refresh-token");
+	const { insertRefreshTokenToDB, queryRefreshTokenValidity, generateRefreshToken } = require("@shared/refresh-token");
 
 	test("validates refresh token from database", (done) => {
 		addUser(exampleUser)
