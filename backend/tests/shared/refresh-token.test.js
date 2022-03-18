@@ -1,5 +1,11 @@
 require("module-alias-jest/register");
 require("@shared/config").config();
+const { afterAll } = require("@jest/globals");
+const { connection: mysql_connection } = require("@shared/database-connection");
+
+afterAll(() => {
+	mysql_connection.end();
+});
 
 beforeEach(() => {
 	jest.useFakeTimers();
