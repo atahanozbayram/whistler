@@ -37,6 +37,47 @@ const insertRefreshTokenToDB = function (user_uuid) {
 	});
 };
 
+// eslint-disable-next-line no-unused-vars
+const getRefreshToken = function ({ user_uuid, token, used }, limit) {
+	return new Promise((resolve, reject) => {
+		const tokenInfo = arguments[0];
+
+		Promise.all(
+			Object.entries(tokenInfo).map(async ([key, value]) => {
+				if (key === "user_uuid") value = uuidToBinary(value);
+				if (key === "token") {
+					value = await new Promise((resolve1) => {
+						jwt.verify(value, process.env.JWT_SECRET, function (error, decoded) {
+							if (error) {
+								// intentionally not use reject1
+								reject(error);
+								return;
+							}
+
+							resolve1(decoded.token);
+						});
+					});
+				}
+
+				return `${mysql.escapeId(key)}=${mysql.escape(value)}`;
+			})
+		).then((values) => {
+			const where = values.join(" and ");
+			connection.query(
+				`SELECT * FROM refresh_token WHERE ${where}${limit ? ` LIMIT ${limit}` : ""}`,
+				function (error, results) {
+					if (error) {
+						reject(error);
+						return;
+					}
+
+					resolve(results);
+				}
+			);
+		});
+	});
+};
+
 const queryRefreshTokenValidity = function (refresh_token) {
 	return new Promise((resolve, reject) => {
 		jwt.verify(refresh_token, process.env.JWT_SECRET, function (error, decoded) {
