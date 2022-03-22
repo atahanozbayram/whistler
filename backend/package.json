@@ -34,10 +34,10 @@
 		"supertest": "^6.2.2"
 	},
 	"_moduleAliases": {
-		"@root": ".",
-		"@middlewares": "src/middlewares/",
-		"@routes": "src/routes/",
-		"@tests": "tests/",
-		"@shared": "src/shared/"
+		"@root": "./dist/",
+		"@middlewares": "./dist/src/middlewares/",
+		"@routes": "./dist/src/routes/",
+		"@tests": "./dist/tests/",
+		"@shared": "./dist/src/shared/"
 	}
 }
