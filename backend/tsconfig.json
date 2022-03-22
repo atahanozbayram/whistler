@@ -1,0 +1,22 @@
+{
+	"compilerOptions": {
+		"paths": {
+			"@root/*": ["./*"],
+			"@middlewares/*": ["./src/middlewares/*"],
+			"@routes/*": ["./src/routes/*"],
+			"@tests/*": ["./tests/*"],
+			"@shared/*": ["./src/shared/*"]
+		},
+		"target": "es5",
+		"module": "commonjs",
+		"outDir": "./dist/",
+		"rootDir": "./",
+		"strict": true,
+		"moduleResolution": "node",
+		"esModuleInterop": true,
+		"allowJs": true,
+		"baseUrl": "./src/"
+	},
+	"include": ["./src/**/*"],
+	"exclude": ["node_modules"]
+}
