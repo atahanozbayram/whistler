@@ -4,7 +4,10 @@
 	"description": "Backend for whistler. A twitter-like social media platform.",
 	"main": "./dist/src/index.js",
 	"scripts": {
-		"test": "jest"
+		"test": "jest",
+		"start": "node dist/src/index",
+		"build": "tsc -p ./tsconfig.json",
+		"dev": "NODE_ENV=development tsc-watch --onSuccess \"node .\""
 	},
 	"author": "",
 	"license": "MIT",
