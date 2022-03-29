@@ -7,7 +7,7 @@
 			"@tests/*": ["./tests/*"],
 			"@shared/*": ["./src/shared/*"]
 		},
-		"target": "es5",
+		"target": "es6",
 		"module": "commonjs",
 		"outDir": "./dist/",
 		"rootDir": "./",
@@ -15,7 +15,10 @@
 		"moduleResolution": "node",
 		"esModuleInterop": true,
 		"allowJs": true,
-		"baseUrl": "./src/"
+		"checkJs": true,
+		"sourceMap": true,
+		"removeComments": false,
+		"baseUrl": "./"
 	},
 	"include": ["./src/**/*"],
 	"exclude": ["node_modules"]
