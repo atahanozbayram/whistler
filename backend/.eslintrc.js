@@ -6,12 +6,13 @@ module.exports = {
 		jest: true,
 		"jest/globals": true,
 	},
-	extends: ["eslint:recommended", "prettier"],
+	extends: ["eslint:recommended", "prettier", "plugin:@typescript-eslint/recommended"],
+	parser: "@typescript-eslint/parser",
 	parserOptions: {
 		ecmaVersion: "latest",
 	},
+	plugins: ["jest", "@typescript-eslint"],
 	rules: {
 		// "comma-dangle": ["warn", "only-multiline"]
 	},
-	plugins: ["jest"],
 };
