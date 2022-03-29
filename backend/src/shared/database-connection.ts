@@ -1,10 +1,10 @@
-const mysql = require("mysql");
+import mysql from "mysql";
 
-let connection = mysql.createConnection({
+const connection = mysql.createConnection({
 	host: process.env.DB_HOST,
 	user: process.env.DB_USER,
 	password: process.env.DB_PASS,
 	database: process.env.DB_DATABASE,
 });
 
-module.exports = { connection };
+export { connection };
