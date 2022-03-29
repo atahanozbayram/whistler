@@ -2,7 +2,7 @@
 	"name": "Whistler",
 	"version": "1.0.0",
 	"description": "Backend for whistler. A twitter-like social media platform.",
-	"main": "src/index.js",
+	"main": "./dist/src/index.js",
 	"scripts": {
 		"test": "jest"
 	},
