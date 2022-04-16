@@ -38,6 +38,6 @@
     "@middlewares": "./dist/src/middlewares/",
     "@routes": "./dist/src/routes/",
     "@tests": "./dist/tests/",
-    "@shared": "./dist/src/shared"
+    "@shared": "./dist/src/shared/"
   }
 }
