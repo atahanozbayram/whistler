@@ -43,6 +43,7 @@
 		"typescript": "^4.6.3"
 	},
 	"_moduleAliases": {
+		"@config": "./dist/config",
 		"@root": "./dist/",
 		"@src": "./dist/src/",
 		"@controllers": "./dist/src/controllers/",

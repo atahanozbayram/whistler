@@ -1,6 +1,7 @@
 {
 	"compilerOptions": {
 		"paths": {
+			"@config/*": ["./config/*"],
 			"@root/*": ["./*"],
 			"@src/*": ["./src/*"],
 			"@controllers/*": ["./src/controllers/*"],
@@ -17,7 +18,7 @@
 		"moduleResolution": "node",
 		"esModuleInterop": true,
 		"allowJs": false,
-		"checkJs": true,
+		"checkJs": false,
 		"sourceMap": true,
 		"removeComments": false,
 		"baseUrl": "./",
