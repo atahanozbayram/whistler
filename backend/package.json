@@ -26,6 +26,8 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.19.0",
+    "@typescript-eslint/parser": "^5.19.0",
     "dotenv-cli": "^5.1.0",
     "eslint": "^8.13.0",
     "eslint-config-prettier": "^8.5.0",
