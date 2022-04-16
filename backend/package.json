@@ -1,49 +1,50 @@
 {
-  "name": "whistler-backend",
-  "version": "1.0.0",
-  "description": "",
-  "main": "dist/src/index.js",
-  "scripts": {
-    "test": "jest",
-    "start": "node dist/src/index",
-    "build": "tsc -p ./tsconfig.json",
-    "dev": "NODE_ENV=development tsc-watch --onSuccess \"node .\"",
-    "dotenv": "npx dotenv"
-  },
-  "author": "Atahan Ozbayram",
-  "license": "MIT",
-  "dependencies": {
-    "@prisma/client": "^3.12.0",
-    "bcrypt": "^5.0.1",
-    "body-parser": "^1.20.0",
-    "dotenv": "^16.0.0",
-    "express": "^4.17.3",
-    "express-validator": "^6.14.0",
-    "jsonwebtoken": "^8.5.1",
-    "module-alias": "^2.2.2",
-    "nodemailer": "^6.7.3",
-    "prisma": "^3.12.0",
-    "uuid": "^8.3.2"
-  },
-  "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.19.0",
-    "@typescript-eslint/parser": "^5.19.0",
-    "dotenv-cli": "^5.1.0",
-    "eslint": "^8.13.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-jest": "^26.1.4",
-    "jest": "^27.5.1",
-    "module-alias-jest": "^0.0.3",
-    "ts-jest": "^27.1.4",
-    "ts-node": "^10.7.0",
-    "tsc-watch": "^5.0.3",
-    "typescript": "^4.6.3"
-  },
-  "_moduleAliases": {
-    "@root": "./dist/",
-    "@middlewares": "./dist/src/middlewares/",
-    "@routes": "./dist/src/routes/",
-    "@tests": "./dist/tests/",
-    "@shared": "./dist/src/shared/"
-  }
+	"name": "whistler-backend",
+	"version": "1.0.0",
+	"description": "",
+	"main": "dist/src/index.js",
+	"scripts": {
+		"test": "jest",
+		"start": "node dist/src/index",
+		"build": "tsc -p ./tsconfig.json",
+		"dev": "NODE_ENV=development tsc-watch --onSuccess \"node .\"",
+		"dotenv": "npx dotenv"
+	},
+	"author": "Atahan Ozbayram",
+	"license": "MIT",
+	"dependencies": {
+		"@prisma/client": "^3.12.0",
+		"bcrypt": "^5.0.1",
+		"body-parser": "^1.20.0",
+		"dotenv": "^16.0.0",
+		"express": "^4.17.3",
+		"express-validator": "^6.14.0",
+		"jsonwebtoken": "^8.5.1",
+		"module-alias": "^2.2.2",
+		"nodemailer": "^6.7.3",
+		"prisma": "^3.12.0",
+		"uuid": "^8.3.2"
+	},
+	"devDependencies": {
+		"@types/jest": "^27.4.1",
+		"@typescript-eslint/eslint-plugin": "^5.19.0",
+		"@typescript-eslint/parser": "^5.19.0",
+		"dotenv-cli": "^5.1.0",
+		"eslint": "^8.13.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-jest": "^26.1.4",
+		"jest": "^27.5.1",
+		"module-alias-jest": "^0.0.3",
+		"ts-jest": "^27.1.4",
+		"ts-node": "^10.7.0",
+		"tsc-watch": "^5.0.3",
+		"typescript": "^4.6.3"
+	},
+	"_moduleAliases": {
+		"@root": "./dist/",
+		"@middlewares": "./dist/src/middlewares/",
+		"@routes": "./dist/src/routes/",
+		"@tests": "./dist/tests/",
+		"@shared": "./dist/src/shared/"
+	}
 }
