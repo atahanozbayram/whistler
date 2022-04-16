@@ -2,6 +2,8 @@
 	"compilerOptions": {
 		"paths": {
 			"@root/*": ["./*"],
+			"@src/*": ["./src/*"],
+			"@controllers/*": ["./src/controllers/*"],
 			"@middlewares/*": ["src/middlewares/*"],
 			"@routes/*": ["src/routes/*"],
 			"@tests/*": ["tests/*"],

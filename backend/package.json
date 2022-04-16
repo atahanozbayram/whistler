@@ -42,6 +42,8 @@
 	},
 	"_moduleAliases": {
 		"@root": "./dist/",
+		"@src": "./dist/src/",
+		"@controllers": "./dist/src/controllers/",
 		"@middlewares": "./dist/src/middlewares/",
 		"@routes": "./dist/src/routes/",
 		"@tests": "./dist/tests/",
