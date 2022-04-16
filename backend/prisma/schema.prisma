@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model gender {
+  id     Int    @id @default(autoincrement())
+  gender String @db.VarChar(16)
+  user   user[]
+}
+
+model user {
+  uuid                Bytes              @id @db.Binary(16)
+  firstname           String             @db.VarChar(48)
+  lastname            String             @db.VarChar(48)
+  birth_date          DateTime           @db.DateTime(0)
+  gender              Int
+  username            String             @db.VarChar(16)
+  password_hash       String             @db.VarChar(60)
+  verified            Boolean            @default(false)
+  gender_genderTouser gender             @relation(fields: [gender], references: [id], onUpdate: Restrict, map: "user_gender_FK")
+  verification_url    verification_url[]
+
+  @@index([gender], map: "user_gender_FK")
+  @@index([verified], map: "user_verified_IDX")
+}
+
+model verification_url {
+  user_uuid           Bytes   @db.Binary(16)
+  url                 String  @id @db.VarChar(128)
+  user_email          String  @db.VarChar(255)
+  activation_complete Boolean @default(false)
+  user                user    @relation(fields: [user_uuid], references: [uuid], onUpdate: Restrict, map: "verification_url_FK")
+
+  @@index([user_uuid], map: "verification_url_FK")
+}
