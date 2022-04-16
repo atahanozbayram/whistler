@@ -4,7 +4,11 @@
   "description": "",
   "main": "dist/src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "start": "node dist/src/index",
+    "build": "tsc -p ./tsconfig.json",
+    "dev": "NODE_ENV=development tsc-watch --onSuccess \"node .\"",
+    "dotenv": "npx dotenv"
   },
   "author": "Atahan Ozbayram",
   "license": "MIT",
