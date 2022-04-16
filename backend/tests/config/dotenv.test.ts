@@ -16,4 +16,10 @@ describe("Testing dotenv config file", () => {
 		process.env.NODE_ENV = "prod";
 		expect(config()).toBe(".env.prod");
 	});
+
+	test("config can read and update environment variables", () => {
+		process.env.NODE_ENV = "example";
+		config();
+		expect(process.env.API_PORT).not.toBeFalsy();
+	});
 });
