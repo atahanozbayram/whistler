@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "dist/src/index.js",
 	"scripts": {
-		"test": "jest --verbose",
+		"test": "dotenv -e ./.env.test -- jest --verbose",
 		"start": "node dist/src/index",
 		"build": "tsc -p ./tsconfig.json",
 		"dev": "NODE_ENV=development tsc-watch --onSuccess \"node .\"",
