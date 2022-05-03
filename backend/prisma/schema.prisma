@@ -8,7 +8,7 @@ datasource db {
 }
 
 model gender {
-  id     Int    @id @default(autoincrement())
+  id     Int    @id
   gender String @db.VarChar(16)
   user   user[]
 }
