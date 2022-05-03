@@ -1,6 +1,9 @@
 {
 	"name": "whistler-backend",
 	"version": "1.0.0",
+	"prisma": {
+		"seed": "ts-node ./prisma/test-seed.ts"
+	},
 	"description": "",
 	"main": "dist/src/index.js",
 	"scripts": {
@@ -39,7 +42,7 @@
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-jest": "^26.1.4",
 		"jest": "^27.5.1",
-		"jest-mock-extended": "^2.0.5",
+		"jest-mock-extended": "^2.0.4",
 		"module-alias-jest": "^0.0.3",
 		"supertest": "^6.2.2",
 		"ts-jest": "^27.1.4",
