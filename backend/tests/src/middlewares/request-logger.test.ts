@@ -1,7 +1,8 @@
-import { app } from "@src/app";
+import express from "express";
 import request from "supertest";
 import { requestLogger } from "@middlewares/request-logger";
 import { logger } from "@shared/logger";
+import bodyParser from "body-parser";
 
 jest.mock("@shared/logger", () => {
 	return {
@@ -15,6 +16,9 @@ jest.mock("@shared/logger", () => {
 const mockedLogger = jest.mocked(logger, true);
 
 describe("tests related to request logger middleware", () => {
+	const app = express();
+	app.use(bodyParser.json());
+
 	it("calls the logger.info method to log request", (done) => {
 		app.use(requestLogger);
 		app.get("/", (req, res) => {
