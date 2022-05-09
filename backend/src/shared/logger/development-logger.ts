@@ -4,7 +4,7 @@ const myFormat = winston.format.printf(({ level, message, timestamp }) => {
 	return `${timestamp} ${level}: ${message}`;
 });
 
-const log_file_path = process.env.LOG_FILE_PATH | `${process.env.NODE_ENV}.log`;
+const log_file_path: string = process.env.LOG_FILE_PATH ? process.env.LOG_FILE_PATH : `${process.env.NODE_ENV}.log`;
 
 const makeDevelopmentLogger = function () {
 	return winston.createLogger({
