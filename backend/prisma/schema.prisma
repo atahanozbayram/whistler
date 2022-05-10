@@ -22,6 +22,7 @@ model user {
   username            String             @db.VarChar(16)
   password_hash       String             @db.VarChar(60)
   verified            Boolean            @default(false)
+  email               String             @db.VarChar(255)
   gender_genderTouser gender             @relation(fields: [gender], references: [id], onUpdate: Restrict, map: "user_gender_FK")
   verification_url    verification_url[]
 
