@@ -14,6 +14,7 @@ describe("test shared user functionalities", () => {
 		const userInfo = {
 			firstname: "Atahan",
 			lastname: "Ozbayram",
+			email: "atahan_ozbayram@hotmail.com",
 			gender: 2,
 			password: "password",
 			username: "atahan1006",

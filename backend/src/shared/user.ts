@@ -16,6 +16,7 @@ const uuidToBinary = function (uuid: string) {
 const saveUser = function (userInfo: {
 	firstname: string;
 	lastname: string;
+	email: string;
 	gender: number;
 	password: string;
 	username: string;
@@ -31,6 +32,7 @@ const saveUser = function (userInfo: {
 						uuid: uuid_binary,
 						firstname: userInfo.firstname,
 						lastname: userInfo.lastname,
+						email: userInfo.email,
 						username: userInfo.username,
 						birth_date: userInfo.birth_date,
 						password_hash: password_hash,
