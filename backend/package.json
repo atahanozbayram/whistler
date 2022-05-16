@@ -7,7 +7,7 @@
 	"description": "",
 	"main": "dist/src/index.js",
 	"scripts": {
-		"test": "dotenv -e ./.env.test -- jest --verbose",
+		"test": "dotenv -e ./.env.test -- jest -i --verbose",
 		"start": "node dist/src/index",
 		"build": "tsc -p ./tsconfig.json",
 		"dev": "NODE_ENV=development tsc-watch --onSuccess \"node .\"",
@@ -16,7 +16,7 @@
 	"author": "Atahan Ozbayram",
 	"license": "MIT",
 	"dependencies": {
-		"@prisma/client": "^3.12.0",
+		"@prisma/client": "^3.14.0",
 		"bcrypt": "^5.0.1",
 		"body-parser": "^1.20.0",
 		"dotenv": "^16.0.0",
@@ -25,7 +25,6 @@
 		"jsonwebtoken": "^8.5.1",
 		"module-alias": "^2.2.2",
 		"nodemailer": "^6.7.3",
-		"prisma": "^3.12.0",
 		"uuid": "^8.3.2",
 		"winston": "^3.7.2"
 	},
@@ -45,6 +44,7 @@
 		"jest": "^27.5.1",
 		"jest-mock-extended": "^2.0.4",
 		"module-alias-jest": "^0.0.3",
+		"prisma": "^3.14.0",
 		"supertest": "^6.2.2",
 		"ts-jest": "^27.1.4",
 		"ts-node": "^10.7.0",
