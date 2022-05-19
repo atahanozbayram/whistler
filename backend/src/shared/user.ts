@@ -1,6 +1,7 @@
 import { prisma } from "@shared/prisma-client";
 import { v1 as uuidv1 } from "uuid";
 import bcrypt from "bcrypt";
+import { user } from "@prisma/client";
 /*
  * converts from uuidv1 string to 16 bytes hex code
  * @param uuid*/
@@ -13,7 +14,7 @@ const uuidToBinary = function (uuid: string) {
  * saves user into database
  * @param userInfo object contains information about user */
 
-const saveUser = function (userInfo: {
+const saveUser: (userInfo: {
 	firstname: string;
 	lastname: string;
 	email: string;
@@ -21,7 +22,7 @@ const saveUser = function (userInfo: {
 	password: string;
 	username: string;
 	birth_date: Date;
-}) {
+}) => Promise<user> = function (userInfo) {
 	return new Promise((resolve, reject) => {
 		const uuid_binary = uuidToBinary(uuidv1());
 
