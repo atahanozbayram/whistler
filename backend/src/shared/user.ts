@@ -57,4 +57,34 @@ const saveUser: (
 	});
 };
 
-export { uuidToBinary, saveUser };
+const saveVerificationCode: (user_uuid: Buffer, ctx?: Context) => Promise<string> = function (
+	user_uuid: Buffer,
+	ctx = { prisma: new PrismaClient() }
+) {
+	return new Promise((resolve, reject) => {
+		ctx ??= { prisma: new PrismaClient() } as Context;
+		const { prisma } = ctx;
+		prisma.user
+			.findFirst({ where: { uuid: user_uuid } })
+			.then((userInfo) => {
+				if (userInfo === null) return reject("user not found with given uuid.");
+
+				const randomCode = otpGenerator.generate(6, {
+					digits: true,
+					specialChars: false,
+					lowerCaseAlphabets: false,
+					upperCaseAlphabets: false,
+				});
+
+				prisma.verification_code
+					.create({
+						data: { uuid: uuidToBinary(uuidv1()), code: randomCode, valid: true, user_uuid: user_uuid },
+					})
+					.then((verificationEntry) => {
+						resolve(verificationEntry.code);
+					})
+					.catch((error) => reject(error));
+			})
+			.catch((error) => reject(error));
+	});
+};
