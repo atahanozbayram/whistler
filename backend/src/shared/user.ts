@@ -16,16 +16,21 @@ const uuidToBinary = function (uuid: string) {
  * saves user into database
  * @param userInfo object contains information about user */
 
-const saveUser: (userInfo: {
-	firstname: string;
-	lastname: string;
-	email: string;
-	gender: number;
-	password: string;
-	username: string;
-	birth_date: Date;
-}) => Promise<user> = function (userInfo) {
+const saveUser: (
+	userInfo: {
+		firstname: string;
+		lastname: string;
+		email: string;
+		gender: number;
+		password: string;
+		username: string;
+		birth_date: Date;
+	},
+	ctx?: Context
+) => Promise<user> = function (userInfo, ctx) {
 	return new Promise((resolve, reject) => {
+		ctx ??= { prisma: new PrismaClient() } as Context;
+		const { prisma } = ctx;
 		const uuid_binary = uuidToBinary(uuidv1());
 
 		bcrypt.hash(userInfo.password, 5).then((password_hash) => {
