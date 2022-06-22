@@ -88,3 +88,44 @@ const saveVerificationCode: (user_uuid: Buffer, ctx?: Context) => Promise<string
 			.catch((error) => reject(error));
 	});
 };
+
+const sendVerificationEmail: (
+	{
+		user_uuid,
+		user_email,
+	}: {
+		user_uuid?: Buffer;
+		user_email: string;
+	},
+	ctx?: Context
+) => Promise<unknown> = function ({ user_uuid, user_email }, ctx) {
+	return new Promise((resolve, reject) => {
+		ctx ??= { prisma: new PrismaClient() } as Context;
+		const { prisma } = ctx;
+		prisma.user
+			.findFirst({
+				where: { OR: [{ uuid: user_uuid }, { email: user_email }], verified: false },
+				orderBy: { email: "desc" },
+			})
+			.then((userInfo) => {
+				// check if userInfo is null, if so reject the Promise
+				if (userInfo === null) {
+					return reject("No verifiable user is found with given arguments.");
+				}
+
+				saveVerificationCode(userInfo.uuid)
+					.then((verification_code) => {
+						transporter
+							.sendMail({ to: userInfo.email, text: `Your verification code is ${verification_code}.` })
+							.then((messageInfo) => {
+								resolve(messageInfo);
+							})
+							.catch((error) => reject(error));
+					})
+					.catch((error) => reject(error));
+			})
+			.catch((error) => reject(error));
+	});
+};
+
+export { uuidToBinary, saveUser, saveVerificationCode, sendVerificationEmail };
