@@ -1,7 +1,9 @@
-import { prisma } from "@shared/prisma-client";
+import { Context } from "@shared/prisma-context";
 import { v1 as uuidv1 } from "uuid";
 import bcrypt from "bcrypt";
-import { user } from "@prisma/client";
+import { PrismaClient, user } from "@prisma/client";
+import { transporter } from "@shared/mailer";
+import otpGenerator from "otp-generator";
 /*
  * converts from uuidv1 string to 16 bytes hex code
  * @param uuid*/
