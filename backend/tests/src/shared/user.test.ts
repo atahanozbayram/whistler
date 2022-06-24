@@ -64,4 +64,17 @@ describe("test shared user functionalities", () => {
 			})
 			.catch((error) => done(error));
 	});
+
+	test("verification code is not saved when invalid user uuid is given", (done) => {
+		const nonSavedUuid = uuidToBinary(uuidv1());
+		saveVerificationCode(nonSavedUuid)
+			.then(() => {
+				done("saveVerificationCode should not resolve instead it should reject.");
+			})
+			.catch(() => {
+				done();
+			});
+	});
+
+	test.todo("sendVerificationEmail calls nodemailer functions with proper arguments");
 });
