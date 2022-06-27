@@ -76,5 +76,28 @@ describe("test shared user functionalities", () => {
 			});
 	});
 
-	test.todo("sendVerificationEmail calls nodemailer functions with proper arguments");
+	test("sendVerificationEmail calls sendMail when provided with correct uuid", (done) => {
+		saveUser({
+			firstname: "Atahan",
+			lastname: "Ozbayram",
+			email: "atahan_ozbayram@hotmail.com",
+			gender: 2,
+			password: "Password1!",
+			username: "username1",
+			birth_date: new Date(1999, 7, 20),
+		})
+			.then((user1) => {
+				mockedTransporter.sendMail.mockResolvedValue({} as SentMessageInfo);
+
+				sendVerificationEmail({ user_email: user1.email, user_uuid: user1.uuid })
+					.then(() => {
+						expect(mockedTransporter.sendMail.mock.calls.length).not.toBe(0);
+						done();
+					})
+					.catch((error) => done(error));
+			})
+			.catch((error) => done(error));
+
+		mockedTransporter.sendMail.mock.calls;
+	});
 });
