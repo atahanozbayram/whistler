@@ -127,4 +127,49 @@ describe("test shared user functionalities", () => {
 			})
 			.catch((error) => done(error));
 	});
+
+	test("sendVerificationEmail fails when provided with invalid uuid", (done) => {
+		saveUser({
+			firstname: "Atahan",
+			lastname: "Ozbayram",
+			email: "atahan_ozbayram@hotmail.com",
+			gender: 2,
+			password: "Password1!",
+			username: "username1",
+			birth_date: new Date(1999, 7, 20),
+		})
+			.then(() => {
+				const fakeUuid = uuidToBinary(uuidv1());
+				sendVerificationEmail({ user_uuid: fakeUuid })
+					.then(() => {
+						done("this should not be resolved");
+					})
+					.catch(() => {
+						done();
+					});
+			})
+			.catch((error) => done(error));
+	});
+
+	test("sendVerificationEmail fails when provided with non-existent email address", (done) => {
+		saveUser({
+			firstname: "Atahan",
+			lastname: "Ozbayram",
+			email: "atahan_ozbayram@hotmail.com",
+			birth_date: new Date(1999, 7, 20),
+			username: "username1",
+			password: "Password1!",
+			gender: 2,
+		})
+			.then(() => {
+				sendVerificationEmail({ user_email: "fake" })
+					.then(() => {
+						done("should not resolve");
+					})
+					.catch(() => {
+						done();
+					});
+			})
+			.catch((error) => done(error));
+	});
 });
