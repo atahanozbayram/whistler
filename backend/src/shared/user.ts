@@ -95,7 +95,7 @@ const sendVerificationEmail: (
 		user_email,
 	}: {
 		user_uuid?: Buffer;
-		user_email: string;
+		user_email?: string;
 	},
 	ctx?: Context
 ) => Promise<unknown> = function ({ user_uuid, user_email }, ctx) {
