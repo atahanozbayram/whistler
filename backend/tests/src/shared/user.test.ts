@@ -1,8 +1,14 @@
 import { MockContext, Context, createMockContext } from "@shared/prisma-context";
 import { v1 as uuidv1 } from "uuid";
-import { uuidToBinary, saveUser, saveVerificationCode } from "@shared/user";
+import { uuidToBinary, saveUser, saveVerificationCode, sendVerificationEmail } from "@shared/user";
 import { user } from "@prisma/client";
 import { prisma } from "@shared/prisma-original";
+import { transporter } from "@shared/mailer";
+import { SentMessageInfo } from "nodemailer";
+
+jest.mock("@shared/mailer");
+
+const mockedTransporter = jest.mocked(transporter, true);
 
 let mockCtx: MockContext;
 let ctx: Context;
@@ -97,7 +103,28 @@ describe("test shared user functionalities", () => {
 					.catch((error) => done(error));
 			})
 			.catch((error) => done(error));
+	});
 
-		mockedTransporter.sendMail.mock.calls;
+	test("sendVerificationEmail calls sendMail when provided with only valid email address", (done) => {
+		saveUser({
+			firstname: "Atahan",
+			lastname: "Ozbayram",
+			email: "atahan_ozbayram@hotmail.com",
+			gender: 2,
+			password: "Passord1!",
+			username: "username1",
+			birth_date: new Date(1999, 7, 20),
+		})
+			.then((user1) => {
+				mockedTransporter.sendMail.mockResolvedValue({} as SentMessageInfo);
+
+				sendVerificationEmail({ user_email: user1.email })
+					.then(() => {
+						expect(mockedTransporter.sendMail.mock.calls.length).not.toBe(0);
+						done();
+					})
+					.catch((error) => done(error));
+			})
+			.catch((error) => done(error));
 	});
 });
