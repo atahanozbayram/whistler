@@ -3,7 +3,8 @@ import { v1 as uuidv1 } from "uuid";
 import bcrypt from "bcrypt";
 import { transporter } from "@shared/mailer";
 import otpGenerator from "otp-generator";
-import { prisma } from "@shared/prisma-original";
+import { prisma as prismaOg } from "@shared/prisma-original";
+import { user } from "@prisma/client";
 /*
  * converts from uuidv1 string to 16 bytes hex code
  * @param uuid*/
@@ -29,7 +30,7 @@ const saveUser: (
 	ctx?: Context
 ) => Promise<user> = function (userInfo, ctx) {
 	return new Promise((resolve, reject) => {
-		ctx ??= { prisma: prisma } as Context;
+		ctx ??= { prisma: prismaOg } as Context;
 		const { prisma } = ctx;
 		const uuid_binary = uuidToBinary(uuidv1());
 
@@ -59,10 +60,10 @@ const saveUser: (
 
 const saveVerificationCode: (user_uuid: Buffer, ctx?: Context) => Promise<string> = function (
 	user_uuid: Buffer,
-	ctx = { prisma: prisma }
+	ctx = { prisma: prismaOg }
 ) {
 	return new Promise((resolve, reject) => {
-		ctx ??= { prisma: prisma } as Context;
+		ctx ??= { prisma: prismaOg } as Context;
 		const { prisma } = ctx;
 		prisma.user
 			.findFirst({ where: { uuid: user_uuid } })
@@ -100,7 +101,7 @@ const sendVerificationEmail: (
 	ctx?: Context
 ) => Promise<unknown> = function ({ user_uuid, user_email }, ctx) {
 	return new Promise((resolve, reject) => {
-		ctx ??= { prisma: prisma } as Context;
+		ctx ??= { prisma: prismaOg } as Context;
 		const { prisma } = ctx;
 		prisma.user
 			.findFirst({
