@@ -13,6 +13,10 @@ const uuidToBinary = function (uuid: string) {
 	return binary;
 };
 
+const saveCorrectDate = function (date: Date) {
+	return new Date(Date.parse(date.toUTCString()) - date.getTimezoneOffset() * 60000);
+};
+
 /*
  * saves user into database
  * @param userInfo object contains information about user */
