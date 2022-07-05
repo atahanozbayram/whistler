@@ -17,7 +17,7 @@ model user {
   uuid                Bytes    @id @db.Binary(16)
   firstname           String   @db.VarChar(48)
   lastname            String   @db.VarChar(48)
-  birth_date          DateTime @db.DateTime(0)
+  birth_date          DateTime @db.Date
   gender              Int
   username            String   @db.VarChar(16)
   password_hash       String   @db.VarChar(60)
