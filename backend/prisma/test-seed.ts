@@ -11,11 +11,13 @@ const main = async function () {
 	});
 };
 
-main()
-	.catch((e) => {
-		console.error(e);
-		process.exit(1);
-	})
-	.finally(async () => {
-		await prisma.$disconnect();
-	});
+// main()
+// 	.catch((e) => {
+// 		console.error(e);
+// 		process.exit(1);
+// 	})
+// 	.finally(async () => {
+// 		await prisma.$disconnect();
+// 	});
+
+export { main as seed };
