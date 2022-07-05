@@ -18,13 +18,15 @@ beforeEach(() => {
 	ctx = mockCtx as unknown as Context;
 });
 
-describe("test shared user functionalities", () => {
+describe("uuidToBinary related tests", () => {
 	test("uuidToBinary returns 16 bytes of binary in hex representation", () => {
 		const uuid = uuidv1();
 
 		expect(uuidToBinary(uuid).length).toBe(16);
 	});
+});
 
+describe("saveUser related tests", () => {
 	test("saveUser calls appropriate prisma functions when provided with correct arguments", (done) => {
 		const userInfo = {
 			firstname: "Atahan",
@@ -81,7 +83,9 @@ describe("test shared user functionalities", () => {
 				done();
 			});
 	});
+});
 
+describe("sendVerificationEmail related tests", () => {
 	test("sendVerificationEmail calls sendMail when provided with correct uuid", (done) => {
 		saveUser({
 			firstname: "Atahan",
