@@ -33,7 +33,7 @@ describe("test shared user functionalities", () => {
 			gender: 2,
 			password: "password",
 			username: "atahan1006",
-			birth_date: new Date(1999, 7, 20),
+			birth_date: new Date("1999-7-20"),
 		};
 
 		mockCtx.prisma.user.create.mockResolvedValue(userInfo as unknown as user);
@@ -51,7 +51,7 @@ describe("test shared user functionalities", () => {
 			firstname: "Atahan",
 			lastname: "Ozbayram",
 			username: "username1",
-			birth_date: new Date(1999, 7, 20),
+			birth_date: new Date("1999-7-20"),
 			gender: 2,
 			email: "atahan_ozbayram@hotmail.com",
 			password: "Password1!",
@@ -90,7 +90,7 @@ describe("test shared user functionalities", () => {
 			gender: 2,
 			password: "Password1!",
 			username: "username1",
-			birth_date: new Date(1999, 7, 20),
+			birth_date: new Date("1999-7-20"),
 		})
 			.then((user1) => {
 				mockedTransporter.sendMail.mockResolvedValue({} as SentMessageInfo);
@@ -113,7 +113,7 @@ describe("test shared user functionalities", () => {
 			gender: 2,
 			password: "Passord1!",
 			username: "username1",
-			birth_date: new Date(1999, 7, 20),
+			birth_date: new Date("1999-7-20"),
 		})
 			.then((user1) => {
 				mockedTransporter.sendMail.mockResolvedValue({} as SentMessageInfo);
@@ -136,7 +136,7 @@ describe("test shared user functionalities", () => {
 			gender: 2,
 			password: "Password1!",
 			username: "username1",
-			birth_date: new Date(1999, 7, 20),
+			birth_date: new Date("1999-7-20"),
 		})
 			.then(() => {
 				const fakeUuid = uuidToBinary(uuidv1());
@@ -156,7 +156,7 @@ describe("test shared user functionalities", () => {
 			firstname: "Atahan",
 			lastname: "Ozbayram",
 			email: "atahan_ozbayram@hotmail.com",
-			birth_date: new Date(1999, 7, 20),
+			birth_date: new Date("1999-7-20"),
 			username: "username1",
 			password: "Password1!",
 			gender: 2,

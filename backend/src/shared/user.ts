@@ -43,9 +43,10 @@ const saveUser: (
 						lastname: userInfo.lastname,
 						email: userInfo.email,
 						username: userInfo.username,
-						birth_date: userInfo.birth_date,
+						birth_date: saveCorrectDate(userInfo.birth_date),
 						password_hash: password_hash,
 						gender: userInfo.gender,
+						verified: false,
 					},
 				})
 				.then((result) => {
