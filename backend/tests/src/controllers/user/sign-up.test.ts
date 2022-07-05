@@ -6,7 +6,7 @@ import { signUpRoute } from "@controllers/user/sign-up";
 
 describe("sign-up related tests", () => {
 	app.post("/sign-up", signUpRoute);
-	test("sending fully empty request body causes errors to be returned.", (done) => {
+	test("sending fully empty request body returns 400 status code.", (done) => {
 		request(app)
 			.post("/sign-up")
 			.send({})
