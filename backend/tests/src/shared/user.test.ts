@@ -26,17 +26,29 @@ describe("uuidToBinary related tests", () => {
 	});
 });
 
+type UserInfo = {
+	firstname: string;
+	lastname: string;
+	email: string;
+	gender: number;
+	password: string;
+	username: string;
+	birth_date: Date;
+};
+
+const userInfoInstance: UserInfo = {
+	firstname: "Atahan",
+	lastname: "Ozbayram",
+	email: "atahan_ozbayram@hotmail.com",
+	gender: 2,
+	password: "Password1!",
+	birth_date: new Date("1999-07-20"),
+	username: "username1",
+};
+
 describe("saveUser related tests", () => {
 	test("saveUser calls appropriate prisma functions when provided with correct arguments", (done) => {
-		const userInfo = {
-			firstname: "Atahan",
-			lastname: "Ozbayram",
-			email: "atahan_ozbayram@hotmail.com",
-			gender: 2,
-			password: "password",
-			username: "atahan1006",
-			birth_date: new Date("1999-7-20"),
-		};
+		const userInfo = userInfoInstance;
 
 		mockCtx.prisma.user.create.mockResolvedValue(userInfo as unknown as user);
 
@@ -49,15 +61,7 @@ describe("saveUser related tests", () => {
 	});
 
 	test("verificationCode is saved when valid user uuid is given", (done) => {
-		const userInfo = {
-			firstname: "Atahan",
-			lastname: "Ozbayram",
-			username: "username1",
-			birth_date: new Date("1999-7-20"),
-			gender: 2,
-			email: "atahan_ozbayram@hotmail.com",
-			password: "Password1!",
-		};
+		const userInfo = userInfoInstance;
 
 		saveUser(userInfo)
 			.then((user1) => {
@@ -87,15 +91,7 @@ describe("saveUser related tests", () => {
 
 describe("sendVerificationEmail related tests", () => {
 	test("sendVerificationEmail calls sendMail when provided with correct uuid", (done) => {
-		saveUser({
-			firstname: "Atahan",
-			lastname: "Ozbayram",
-			email: "atahan_ozbayram@hotmail.com",
-			gender: 2,
-			password: "Password1!",
-			username: "username1",
-			birth_date: new Date("1999-7-20"),
-		})
+		saveUser(userInfoInstance)
 			.then((user1) => {
 				mockedTransporter.sendMail.mockResolvedValue({} as SentMessageInfo);
 
@@ -110,15 +106,7 @@ describe("sendVerificationEmail related tests", () => {
 	});
 
 	test("sendVerificationEmail calls sendMail when provided with only valid email address", (done) => {
-		saveUser({
-			firstname: "Atahan",
-			lastname: "Ozbayram",
-			email: "atahan_ozbayram@hotmail.com",
-			gender: 2,
-			password: "Passord1!",
-			username: "username1",
-			birth_date: new Date("1999-7-20"),
-		})
+		saveUser(userInfoInstance)
 			.then((user1) => {
 				mockedTransporter.sendMail.mockResolvedValue({} as SentMessageInfo);
 
@@ -133,15 +121,7 @@ describe("sendVerificationEmail related tests", () => {
 	});
 
 	test("sendVerificationEmail fails when provided with invalid uuid", (done) => {
-		saveUser({
-			firstname: "Atahan",
-			lastname: "Ozbayram",
-			email: "atahan_ozbayram@hotmail.com",
-			gender: 2,
-			password: "Password1!",
-			username: "username1",
-			birth_date: new Date("1999-7-20"),
-		})
+		saveUser(userInfoInstance)
 			.then(() => {
 				const fakeUuid = uuidToBinary(uuidv1());
 				sendVerificationEmail({ user_uuid: fakeUuid })
@@ -156,15 +136,7 @@ describe("sendVerificationEmail related tests", () => {
 	});
 
 	test("sendVerificationEmail fails when provided with non-existent email address", (done) => {
-		saveUser({
-			firstname: "Atahan",
-			lastname: "Ozbayram",
-			email: "atahan_ozbayram@hotmail.com",
-			birth_date: new Date("1999-7-20"),
-			username: "username1",
-			password: "Password1!",
-			gender: 2,
-		})
+		saveUser(userInfoInstance)
 			.then(() => {
 				sendVerificationEmail({ user_email: "fake" })
 					.then(() => {
