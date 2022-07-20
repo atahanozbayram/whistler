@@ -6,6 +6,7 @@ import { logger } from "@root/src/shared/logger";
 import { prisma } from "@shared/prisma-original";
 import { TypedRequestBody } from "@shared/custom-types/express-related";
 import { validationCheckMV } from "@middlewares/validation-checker";
+import { requestLogger } from "@shared/request-logger";
 import _ from "lodash";
 
 const signUpRoute = Router();
@@ -27,7 +28,7 @@ const signUpLogMiddleware = function (req: TypedRequestBody<signUpReqBody>, res:
 	reqCopy.body.password = "<CENSORED FOR SECURITY>";
 	reqCopy.body.password_confirmation = "<CENSORED FOR SECURITY>";
 
-	logger.info(`request body: ${JSON.stringify(reqCopy.body)}`, { ...reqCopy });
+	requestLogger(reqCopy);
 	next();
 };
 
