@@ -1,6 +1,6 @@
 import { saveUser } from "@root/src/shared/user";
 import { NextFunction, Response, Router } from "express";
-import { check, validationResult } from "express-validator";
+import { check } from "express-validator";
 import { ValidationMessages, ErrorMessages } from "@shared/error-lib";
 import { logger } from "@root/src/shared/logger";
 import { prisma } from "@shared/prisma-original";
