@@ -5,6 +5,7 @@ import { ValidationMessages, ErrorMessages } from "@shared/error-lib";
 import { logger } from "@root/src/shared/logger";
 import { prisma } from "@shared/prisma-original";
 import { TypedRequestBody } from "@shared/custom-types/express-related";
+import { validationCheckMV } from "@middlewares/validation-checker";
 import _ from "lodash";
 
 const signUpRoute = Router();
@@ -87,12 +88,6 @@ const signUpValidation = [
 ];
 
 const signUp = function (req: TypedRequestBody<signUpReqBody>, res: Response) {
-	const errors = validationResult(req);
-
-	if (!errors.isEmpty()) {
-		return res.status(400).json({ errors: errors.array() });
-	}
-
 	const { firstname, lastname, email, birth_date, gender, username, password, password_confirmation } = req.body;
 
 	if (password !== password_confirmation) {
@@ -135,5 +130,5 @@ const signUp = function (req: TypedRequestBody<signUpReqBody>, res: Response) {
 		});
 };
 
-signUpRoute.use(signUpLogMiddleware, signUpValidation, signUp);
+signUpRoute.use(signUpLogMiddleware, signUpValidation, validationCheckMV, signUp);
 export { signUpRoute, signUpValidation, signUpReqBody };
