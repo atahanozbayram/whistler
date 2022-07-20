@@ -1,10 +1,11 @@
 import { saveUser } from "@root/src/shared/user";
-import { Response, Router } from "express";
+import { NextFunction, Response, Router } from "express";
 import { check, validationResult } from "express-validator";
 import { ValidationMessages, ErrorMessages } from "@shared/error-lib";
 import { logger } from "@root/src/shared/logger";
 import { prisma } from "@shared/prisma-original";
 import { TypedRequestBody } from "@shared/custom-types/express-related";
+import _ from "lodash";
 
 const signUpRoute = Router();
 
@@ -17,6 +18,16 @@ type signUpReqBody = {
 	username: string;
 	password: string;
 	password_confirmation: string;
+};
+
+const signUpLogMiddleware = function (req: TypedRequestBody<signUpReqBody>, res: Response, next: NextFunction) {
+	// censor the sensitive information by creating a copy of req copy in which sensitive information is altered.
+	const reqCopy = _.cloneDeep(req);
+	reqCopy.body.password = "<CENSORED FOR SECURITY>";
+	reqCopy.body.password_confirmation = "<CENSORED FOR SECURITY>";
+
+	logger.info(`request body: ${JSON.stringify(reqCopy.body)}`, { ...reqCopy });
+	next();
 };
 
 const signUpValidation = [
@@ -124,5 +135,5 @@ const signUp = function (req: TypedRequestBody<signUpReqBody>, res: Response) {
 		});
 };
 
-signUpRoute.use(signUpValidation, signUp);
+signUpRoute.use(signUpLogMiddleware, signUpValidation, signUp);
 export { signUpRoute, signUpValidation, signUpReqBody };
