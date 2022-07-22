@@ -5,7 +5,7 @@ import { ValidationMessages, ErrorMessages } from "@shared/error-lib";
 import { logger } from "@root/src/shared/logger";
 import { prisma } from "@shared/prisma-original";
 import { TypedRequestBody } from "@shared/custom-types/express-related";
-import { validationCheckMV } from "@middlewares/validation-checker";
+import { validationCheckMV } from "@middlewares/validation-checker.mw";
 import { requestLogger } from "@shared/request-logger";
 import _ from "lodash";
 
