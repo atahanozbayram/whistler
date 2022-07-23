@@ -54,7 +54,7 @@ const signUpValidation = [
 		.withMessage(ValidationMessages.exists())
 		.isEmail()
 		.bail()
-		.withMessage("must be a valid email address.")
+		.withMessage(ValidationMessages.isEmail())
 		.isLength({ max: 255 })
 		.bail()
 		.withMessage(ValidationMessages.isLength({ max: 255 })),
