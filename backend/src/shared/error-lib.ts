@@ -17,6 +17,9 @@ const ValidationMessages = {
 	isType: function (typeName: string) {
 		return `should be typeof ${typeName}`;
 	},
+	isEmail: function () {
+		return `should be an email address.`;
+	},
 };
 
 const ErrorMessages = {
