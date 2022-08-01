@@ -119,33 +119,4 @@ describe("sendVerificationEmail related tests", () => {
 			})
 			.catch((error) => done(error));
 	});
-
-	test("sendVerificationEmail fails when provided with invalid uuid", (done) => {
-		saveUser(userInfoInstance)
-			.then(() => {
-				const fakeUuid = uuidToBinary(uuidv1());
-				sendVerificationEmail({ user_uuid: fakeUuid })
-					.then(() => {
-						done("this should not be resolved");
-					})
-					.catch(() => {
-						done();
-					});
-			})
-			.catch((error) => done(error));
-	});
-
-	test("sendVerificationEmail fails when provided with non-existent email address", (done) => {
-		saveUser(userInfoInstance)
-			.then(() => {
-				sendVerificationEmail({ user_email: "fake" })
-					.then(() => {
-						done("should not resolve");
-					})
-					.catch(() => {
-						done();
-					});
-			})
-			.catch((error) => done(error));
-	});
 });
