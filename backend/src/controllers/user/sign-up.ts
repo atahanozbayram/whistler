@@ -5,7 +5,7 @@ import { ValidationMessages, ErrorMessages } from "@shared/error-lib";
 import { logger } from "@root/src/shared/logger";
 import { prisma } from "@shared/prisma-original";
 import { TypedRequestBody } from "@shared/custom-types/express-related";
-import { validationCheckMV } from "@middlewares/validation-checker.mw";
+import { validationCheckMw } from "@middlewares/validation-checker.mw";
 import { requestLoggerMiddlewareCreator } from "@middlewares/request-logger.mw";
 import _ from "lodash";
 
@@ -129,5 +129,5 @@ const signUp = function (req: TypedRequestBody<signUpReqBody>, res: Response) {
 		});
 };
 
-signUpRoute.use(requestLoggerMiddlewareCreator(requestCensorer), signUpValidation, validationCheckMV, signUp);
+signUpRoute.use(requestLoggerMiddlewareCreator(requestCensorer), signUpValidation, validationCheckMw, signUp);
 export { signUpRoute, signUpValidation, signUpReqBody };

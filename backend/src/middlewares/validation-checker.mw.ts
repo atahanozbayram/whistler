@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { validationResult } from "express-validator";
 
-const validationCheckMV = function (req: Request, res: Response, next: NextFunction) {
+const validationCheckMw = function (req: Request, res: Response, next: NextFunction) {
 	const errors = validationResult(req);
 
 	if (!errors.isEmpty()) {
@@ -11,4 +11,4 @@ const validationCheckMV = function (req: Request, res: Response, next: NextFunct
 	next();
 };
 
-export { validationCheckMV };
+export { validationCheckMw };
