@@ -5,6 +5,7 @@ import { transporter } from "@shared/mailer";
 import otpGenerator from "otp-generator";
 import { prisma as prismaOg } from "@shared/prisma-original";
 import { user } from "@prisma/client";
+import SMTPTransport from "nodemailer/lib/smtp-transport";
 /*
  * converts from uuidv1 string to 16 bytes hex code
  * @param uuid*/
@@ -97,32 +98,33 @@ const saveVerificationCode: (user_uuid: Buffer, ctx?: Context) => Promise<string
 
 const sendVerificationEmail: (
 	{
-		user_uuid,
 		user_email,
 	}: {
-		user_uuid?: Buffer;
 		user_email?: string;
 	},
 	ctx?: Context
-) => Promise<unknown> = function ({ user_uuid, user_email }, ctx) {
+) => Promise<SMTPTransport.SentMessageInfo | void> = function ({ user_email }, ctx) {
 	return new Promise((resolve, reject) => {
 		ctx ??= { prisma: prismaOg } as Context;
 		const { prisma } = ctx;
+
 		prisma.user
-			.findFirst({
-				where: { OR: [{ uuid: user_uuid }, { email: user_email }], verified: false },
-				orderBy: { email: "desc" },
-			})
-			.then((userInfo) => {
-				// check if userInfo is null, if so reject the Promise
-				if (userInfo === null) {
-					return reject("No verifiable user is found with given arguments.");
+			.findFirst({ where: { email: user_email, verified: false } })
+			.then((user) => {
+				// if the user is null, then resolve immediately.
+				if (user === null) {
+					resolve();
+					return;
 				}
 
-				saveVerificationCode(userInfo.uuid)
-					.then((verification_code) => {
+				saveVerificationCode(user.uuid)
+					.then((code) => {
 						transporter
-							.sendMail({ to: userInfo.email, text: `Your verification code is ${verification_code}.` })
+							.sendMail({
+								from: "Whistler",
+								subject: "Verification",
+								text: `Your verification code is ${code}`,
+							})
 							.then((messageInfo) => {
 								resolve(messageInfo);
 							})
