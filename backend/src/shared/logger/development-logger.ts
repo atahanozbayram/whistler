@@ -1,5 +1,4 @@
 import winston from "winston";
-import path from "path";
 import process from "process";
 
 const myFormat = winston.format.printf(({ level, message, timestamp }) => {
@@ -12,9 +11,6 @@ const makeDevelopmentLogger = function () {
 	return winston.createLogger({
 		level: "silly",
 		transports: [
-			new winston.transports.Console({
-				format: winston.format.combine(winston.format.colorize(), winston.format.timestamp(), myFormat),
-			}),
 			new winston.transports.File({
 				filename: log_file_path,
 				format: winston.format.combine(
@@ -29,4 +25,4 @@ const makeDevelopmentLogger = function () {
 	});
 };
 
-export { makeDevelopmentLogger };
+export { makeDevelopmentLogger, myFormat };
