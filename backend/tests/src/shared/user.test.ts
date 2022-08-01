@@ -95,7 +95,7 @@ describe("sendVerificationEmail related tests", () => {
 			.then((user1) => {
 				mockedTransporter.sendMail.mockResolvedValue({} as SentMessageInfo);
 
-				sendVerificationEmail({ user_email: user1.email, user_uuid: user1.uuid })
+				sendVerificationEmail({ user_email: user1.email })
 					.then(() => {
 						expect(mockedTransporter.sendMail.mock.calls.length).not.toBe(0);
 						done();
