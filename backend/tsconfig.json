@@ -25,6 +25,6 @@
 		"noImplicitAny": true,
 		"lib": ["ES2021.String"]
 	},
-	"include": ["./src/**/*", "./tests/**/*"],
+	"include": ["./src/**/*", "./tests/**/*", "./config/**/*"],
 	"exclude": ["node_modules"]
 }
