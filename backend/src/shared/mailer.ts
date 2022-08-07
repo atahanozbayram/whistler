@@ -7,7 +7,6 @@ const email_password = process.env.EMAIL_PASS;
 const transporter = nodemailer.createTransport({
 	host: "smtp-mail.outlook.com",
 	auth: { user: email_user, pass: email_password },
-	secure: true,
 });
 
 export { transporter };
