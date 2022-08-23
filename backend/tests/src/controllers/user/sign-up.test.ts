@@ -4,6 +4,8 @@ import request from "supertest";
 import { app } from "@src/app";
 import { signUpRoute, signUpReqBody } from "@controllers/user/sign-up";
 import { saveUser } from "@root/src/shared/user";
+import { dummyUserGenerator } from "@tests/shared/user-generator";
+import { generateUsername } from "unique-username-generator";
 
 describe("sign-up related tests", () => {
 	beforeEach(async () => {
@@ -12,15 +14,16 @@ describe("sign-up related tests", () => {
 
 	app.post("/sign-up", signUpRoute);
 
+	const dummyUser = dummyUserGenerator();
 	const signUpReqInstance: signUpReqBody = {
-		firstname: "Atahan",
-		lastname: "Ozbayram",
-		email: "atahan_ozbayram@hotmail.com",
-		gender: 2,
-		password: "Password1!",
-		password_confirmation: "Password1!",
-		username: "username1!",
-		birth_date: "1999-07-20",
+		firstname: dummyUser.firstname,
+		lastname: dummyUser.lastname,
+		email: dummyUser.email,
+		password: dummyUser.password,
+		password_confirmation: dummyUser.password,
+		gender: dummyUser.genderNumber,
+		username: dummyUser.username,
+		birth_date: dummyUser.birth_date,
 	};
 
 	test("sending fully empty request body returns 400 status code.", (done) => {
@@ -51,7 +54,7 @@ describe("sign-up related tests", () => {
 		saveUser({
 			firstname: si.firstname,
 			lastname: si.lastname,
-			username: si.username + "1",
+			username: generateUsername("", 4, 16),
 			birth_date: new Date(si.birth_date),
 			password: si.password,
 			gender: si.gender,
