@@ -1,5 +1,5 @@
 import { saveUser } from "@root/src/shared/user";
-import { NextFunction, Response, Router } from "express";
+import { Response, Router } from "express";
 import { check } from "express-validator";
 import { ValidationMessages, ErrorMessages } from "@shared/error-lib";
 import { logger } from "@root/src/shared/logger";
@@ -62,7 +62,7 @@ const signUpValidation = [
 		.exists()
 		.bail()
 		.withMessage(ValidationMessages.exists())
-		.isDate()
+		.isDate({ format: "yyyy-mm-dd" })
 		.bail()
 		.withMessage(ValidationMessages.isType("Date")),
 	check("gender").isNumeric().bail().withMessage(ValidationMessages.isType("number")),
@@ -70,16 +70,16 @@ const signUpValidation = [
 		.exists()
 		.bail()
 		.withMessage(ValidationMessages.exists())
-		.isLength({ min: 8, max: 16 })
+		.isLength({ min: 4, max: 16 })
 		.bail()
-		.withMessage(ValidationMessages.isLength({ min: 8, max: 16 })),
+		.withMessage(ValidationMessages.isLength({ min: 4, max: 16 })),
 	check("password")
 		.exists()
 		.bail()
 		.withMessage(ValidationMessages.exists())
-		.isLength({ min: 8, max: 16 })
+		.isLength({ min: 8, max: 24 })
 		.bail()
-		.withMessage(ValidationMessages.isLength({ min: 8, max: 16 }))
+		.withMessage(ValidationMessages.isLength({ min: 8, max: 24 }))
 		.isStrongPassword({ minNumbers: 1, minSymbols: 1, minLowercase: 1, minUppercase: 1 })
 		.bail()
 		.withMessage("Password should have at least 1 number, symbol, lowercase and uppercase character"),
