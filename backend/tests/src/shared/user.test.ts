@@ -5,6 +5,7 @@ import { user } from "@prisma/client";
 import { prisma } from "@shared/prisma-original";
 import { transporter } from "@shared/mailer";
 import { SentMessageInfo } from "nodemailer";
+import { dummyUserGenerator } from "@tests/shared/user-generator";
 
 jest.mock("@shared/mailer");
 
@@ -36,14 +37,15 @@ type UserInfo = {
 	birth_date: Date;
 };
 
+const dummyUser = dummyUserGenerator();
 const userInfoInstance: UserInfo = {
-	firstname: "Atahan",
-	lastname: "Ozbayram",
-	email: "atahan_ozbayram@hotmail.com",
-	gender: 2,
-	password: "Password1!",
-	birth_date: new Date("1999-07-20"),
-	username: "username1",
+	firstname: dummyUser.firstname,
+	lastname: dummyUser.lastname,
+	email: dummyUser.email,
+	gender: dummyUser.genderNumber,
+	password: dummyUser.password,
+	birth_date: new Date(dummyUser.birth_date),
+	username: dummyUser.username,
 };
 
 describe("saveUser related tests", () => {
