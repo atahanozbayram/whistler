@@ -126,6 +126,10 @@ const signUp = function (req: TypedRequestBody<signUpReqBody>, res: Response) {
 				.catch((error) => {
 					logger.error(error);
 				});
+		})
+		.catch((error) => {
+			logger.error(error);
+			res.status(500).json({ message: ErrorMessages.general.statusCode.code500 });
 		});
 };
 
