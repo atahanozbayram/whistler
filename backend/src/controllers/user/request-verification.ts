@@ -27,7 +27,7 @@ const reqVerifValChain = [
 		.withMessage(ValidationMessages.isLength({ max: 255 })),
 ];
 
-//
+// Controller meant to be used when a verification code is needed for new accounts.
 const reqVerifCtrllr = function (req: TypedRequestBody<reqVerifReqBody>, res: Response) {
 	const { email } = req.body;
 
