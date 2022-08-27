@@ -9,9 +9,9 @@ import { dummyUserGenerator } from "@tests/shared/user-generator";
 import { prisma } from "@root/src/shared/prisma-original";
 
 describe("request-verification related tests", () => {
-	const api_key = "g62pNd33F5vpusOe";
-	const server_id = "spsztxhz";
-	const server_domain = "spsztxhz.mailosaur.net";
+	const api_key = process.env.MAILOSAUR_API_KEY as string;
+	const server_id = process.env.MAILOSAUR_SERVER_ID as string;
+	const server_domain = process.env.MAILOSAUR_SERVER_DOMAIN as string;
 
 	const mailosaur = new MailosaurClient(api_key);
 	app.post("/request-verification", reqVerifRoute);
