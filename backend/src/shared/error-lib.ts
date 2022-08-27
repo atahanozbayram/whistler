@@ -30,6 +30,15 @@ const ErrorMessages = {
 				usernameInUse: "Username is already in use, enter different one.",
 				emailAndUsernameInUse: "Email and username is already in use, enter different ones.",
 			},
+			requestVerification: {
+				alreadyVerifiedOrNonExistent:
+					"The given email adress already belongs to verified user or there is no account created to verify it.",
+			},
+		},
+	},
+	general: {
+		statusCode: {
+			code500: "Internal server error.",
 		},
 	},
 };

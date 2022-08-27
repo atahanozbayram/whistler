@@ -121,6 +121,8 @@ const sendVerificationEmail: (
 					.then((code) => {
 						transporter
 							.sendMail({
+								sender: process.env.EMAIL_USER,
+								to: user.email,
 								from: "Whistler",
 								subject: "Verification",
 								text: `Your verification code is ${code}`,
