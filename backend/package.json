@@ -51,6 +51,7 @@
 		"eslint-plugin-jest": "^25.7.0",
 		"jest": "^27.5.1",
 		"jest-mock-extended": "2.0.4",
+		"mailosaur": "^8.4.0",
 		"module-alias-jest": "^0.0.3",
 		"prisma": "^4.1.0",
 		"supertest": "^6.2.2",
