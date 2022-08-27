@@ -50,4 +50,15 @@ describe("request-verification related tests", () => {
 				.catch((error) => done(error));
 		});
 	});
+
+	test("sends statusCode 400 when given email is non in the database", (done) => {
+		request(app)
+			.post("/request-verification")
+			.send({ email: "nonexistent@example.com" } as reqVerifReqBody)
+			.then((response) => {
+				expect(response.statusCode).toBe(400);
+				done();
+			})
+			.catch((error) => done(error));
+	});
 });
