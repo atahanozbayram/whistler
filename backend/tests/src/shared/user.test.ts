@@ -1,6 +1,7 @@
 import { MockContext, Context, createMockContext } from "@shared/prisma-context";
 import { v1 as uuidv1 } from "uuid";
-import { uuidToBinary, saveUser, saveVerificationCode, sendVerificationEmail } from "@shared/user";
+import { uuidToBinary, saveUser } from "@shared/user";
+import { saveVerificationCode, sendVerificationEmail } from "@shared/user/verification";
 import { user } from "@prisma/client";
 import { prisma } from "@shared/prisma-original";
 import { transporter } from "@shared/mailer";
