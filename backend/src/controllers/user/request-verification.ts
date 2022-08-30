@@ -4,7 +4,7 @@ import { ErrorMessages, ValidationMessages } from "@shared/error-lib";
 import { requestLoggerMiddlewareCreator as reqLgrMwCreator } from "@middlewares/request-logger.mw";
 import { validationCheckMw } from "@middlewares/validation-checker.mw";
 import { TypedRequestBody } from "@shared/custom-types/express-related";
-import { sendVerificationEmail } from "@shared/user";
+import { sendVerificationEmail } from "@shared/user/verification";
 import { logger } from "@shared/logger";
 import { prisma } from "@shared/prisma-original";
 
