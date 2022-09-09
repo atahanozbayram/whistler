@@ -59,7 +59,7 @@ const saveVerificationCode: (user_uuid: Buffer, ctx?: Context) => Promise<user_v
 									user_uuid: user1.uuid,
 									code: randomCode,
 									valid: true,
-									attempt_left: 5,
+									attempts_left: 5,
 									created_at: new Date(Date.now()),
 									// give two hours of expiration time.
 									expires_at: date.addHours(new Date(Date.now()), 2),
