@@ -18,6 +18,17 @@ describe("request-verification related tests", () => {
 	const dummyUser = dummyUserGenerator();
 	dummyUser.email = faker.internet.email(dummyUser.firstname, dummyUser.lastname, server_domain);
 
+	test("sending fully empty request body returns status code 400", (done) => {
+		request(app)
+			.post("/request-verification")
+			.send({})
+			.then((response) => {
+				expect(response.statusCode).toBe(400);
+				done();
+			})
+			.catch((error) => done(error));
+	});
+
 	test("sends verification email when given email address is in the database", (done) => {
 		// mockedSendVerificationEmail.mockResolvedValue();
 
