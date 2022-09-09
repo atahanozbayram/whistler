@@ -7,6 +7,9 @@ import MailosaurClient from "mailosaur";
 import { faker } from "@faker-js/faker";
 import { dummyUserGenerator } from "@tests/shared/user-generator";
 import { prisma } from "@root/src/shared/prisma-original";
+import ms from "ms";
+
+jest.setTimeout(ms("30 seconds"));
 
 describe("request-verification related tests", () => {
 	const api_key = process.env.MAILOSAUR_API_KEY as string;
