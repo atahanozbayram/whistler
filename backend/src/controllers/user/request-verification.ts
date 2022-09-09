@@ -45,7 +45,6 @@ const reqVerifCtrllr = function (req: TypedRequestBody<reqVerifReqBody>, res: Re
 			// can't wait for the promise to resolve, must send response immediately to avoid http client hanging.
 			sendVerificationEmail({ user_email: email }).catch((error) => {
 				logger.error(error);
-				console.log("error: %o", error);
 			});
 
 			res.status(200).json({ message: "verification code will be sent to your email address." });
