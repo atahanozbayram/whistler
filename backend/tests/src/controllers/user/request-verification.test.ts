@@ -35,7 +35,7 @@ describe("request-verification related tests", () => {
 				.send({ email: dummyUser.email } as reqVerifReqBody)
 				.then((response) => {
 					expect(response.statusCode).toBe(200);
-					prisma.verification_code
+					prisma.user_verification
 						.findFirst({ where: { uuid: user1.uuid }, orderBy: { created_at: "desc" } })
 						.then((verif_code) => {
 							mailosaur.messages
