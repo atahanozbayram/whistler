@@ -31,11 +31,11 @@ model user {
 }
 
 model user_verification {
-  uuid         Bytes    @id @db.Binary(16)
-  user_uuid    Bytes    @db.Binary(16)
-  code         String   @db.VarChar(6)
-  created_at   DateTime @default(now()) @db.DateTime(0)
-  expires_at   DateTime @default(dbgenerated("(current_timestamp() + interval 6 minute)")) @db.DateTime(0)
-  valid        Boolean  @default(true)
-  attempt_left Int      @default(5) @db.TinyInt
+  uuid          Bytes    @id @db.Binary(16)
+  user_uuid     Bytes    @db.Binary(16)
+  code          String   @db.VarChar(6)
+  created_at    DateTime @default(now()) @db.DateTime(0)
+  expires_at    DateTime @default(dbgenerated("(current_timestamp() + interval 6 minute)")) @db.DateTime(0)
+  valid         Boolean  @default(true)
+  attempts_left Int      @default(5) @db.TinyInt
 }
