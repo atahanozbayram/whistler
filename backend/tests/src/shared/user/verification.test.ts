@@ -5,6 +5,12 @@ import { SentMessageInfo } from "nodemailer";
 import { dummyUserGenerator } from "@tests/shared/user-generator";
 import { v1 as uuidv1 } from "uuid";
 import { prisma } from "@shared/prisma-original";
+import ms from "ms";
+
+beforeEach(() => {
+	jest.useRealTimers();
+	jest.useFakeTimers();
+});
 
 jest.mock("@shared/mailer");
 
@@ -38,11 +44,13 @@ describe("saveVerificationCode related tests", () => {
 		saveUser(userInfo)
 			.then((user1) => {
 				saveVerificationCode(user1.uuid)
-					.then((code1) => {
-						prisma.verification_code.findFirst({ where: { code: code1, valid: true } }).then((foundCode) => {
-							expect(foundCode?.code).toBe(code1);
-							done();
-						});
+					.then((verification) => {
+						prisma.user_verification
+							.findFirst({ where: { code: verification.code, valid: true } })
+							.then((foundCode) => {
+								expect(foundCode?.code).toBe(verification.code);
+								done();
+							});
 					})
 					.catch((error) => done(error));
 			})
@@ -58,6 +66,42 @@ describe("saveVerificationCode related tests", () => {
 			.catch(() => {
 				done();
 			});
+	});
+
+	test("verification code will not be generated differently when a valid one already exists.", (done) => {
+		const userInfo = userInfoInstance;
+		saveUser(userInfo)
+			.then((user1) => {
+				saveVerificationCode(user1.uuid)
+					.then((savedCode1) => {
+						saveVerificationCode(user1.uuid)
+							.then((savedCode2) => {
+								expect(savedCode1.code).toBe(savedCode2.code);
+								done();
+							})
+							.catch((error) => done(error));
+					})
+					.catch((error) => done(error));
+			})
+			.catch((error) => done(error));
+	});
+
+	test("verification code will be generated differently when old code is expired with time.", (done) => {
+		const userInfo = userInfoInstance;
+		saveUser(userInfo).then((user1) => {
+			saveVerificationCode(user1.uuid)
+				.then((verification1) => {
+					jest.advanceTimersByTime(ms("3 hours"));
+
+					saveVerificationCode(user1.uuid)
+						.then((verification2) => {
+							expect(verification1).not.toBe(verification2);
+							done();
+						})
+						.catch((error) => done(error));
+				})
+				.catch((error) => done(error));
+		});
 	});
 });
 
