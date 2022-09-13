@@ -2,7 +2,7 @@ import { describe, test } from "@jest/globals";
 import { prisma } from "@shared/prisma-original";
 import request from "supertest";
 import { App } from "@src/app";
-import { signUpRoute, signUpReqBody } from "@controllers/user/sign-up";
+import { SignUp, signUpReqBody } from "@controllers/user/sign-up";
 import { saveUser } from "@root/src/shared/user";
 import { dummyUserGenerator } from "@tests/shared/user-generator";
 import { generateUsername } from "unique-username-generator";
@@ -14,7 +14,8 @@ describe("sign-up related tests", () => {
 		await prisma.user.deleteMany({});
 	});
 
-	app.post("/sign-up", signUpRoute);
+	const signUp = new SignUp();
+	app.post("/sign-up", signUp.router);
 
 	const dummyUser = dummyUserGenerator();
 	const signUpReqInstance: signUpReqBody = {
