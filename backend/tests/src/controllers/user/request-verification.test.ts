@@ -1,7 +1,7 @@
 import { describe, test } from "@jest/globals";
 import { App } from "@src/app";
 import request from "supertest";
-import { reqVerifRoute, reqVerifReqBody } from "@controllers/user/request-verification";
+import { RequestVerification, reqVerifReqBody } from "@controllers/user/request-verification";
 import { saveUser } from "@shared/user";
 import MailosaurClient from "mailosaur";
 import { faker } from "@faker-js/faker";
@@ -18,7 +18,8 @@ describe("request-verification related tests", () => {
 	const server_domain = process.env.MAILOSAUR_SERVER_DOMAIN as string;
 
 	const mailosaur = new MailosaurClient(api_key);
-	app.post("/request-verification", reqVerifRoute);
+	const requestVerification = new RequestVerification();
+	app.post("/request-verification", requestVerification.router);
 	const dummyUser = dummyUserGenerator();
 	dummyUser.email = faker.internet.email(dummyUser.firstname, dummyUser.lastname, server_domain);
 
