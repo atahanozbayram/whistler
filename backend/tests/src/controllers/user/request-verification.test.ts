@@ -1,5 +1,5 @@
 import { describe, test } from "@jest/globals";
-import { app } from "@src/app";
+import { App } from "@src/app";
 import request from "supertest";
 import { reqVerifRoute, reqVerifReqBody } from "@controllers/user/request-verification";
 import { saveUser } from "@shared/user";
@@ -11,6 +11,7 @@ import ms from "ms";
 
 jest.setTimeout(ms("30 seconds"));
 
+const app = new App().app;
 describe("request-verification related tests", () => {
 	const api_key = process.env.MAILOSAUR_API_KEY as string;
 	const server_id = process.env.MAILOSAUR_SERVER_ID as string;
