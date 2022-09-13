@@ -1,10 +1,12 @@
-import { app } from "@src/app";
+import { App } from "@src/app";
 import { saveUser } from "@root/src/shared/user";
 import { saveVerificationCode } from "@shared/user/verification";
 import { dummyUserGenerator } from "@tests/shared/user-generator";
 import { verifAccReqBody, verifAccRoute } from "@controllers/user/verify-account";
 import request from "supertest";
 import ms from "ms";
+
+const app = new App().app;
 
 describe("verify-account related tests", () => {
 	beforeEach(() => {

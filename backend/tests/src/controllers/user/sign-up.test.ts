@@ -1,11 +1,13 @@
 import { describe, test } from "@jest/globals";
 import { prisma } from "@shared/prisma-original";
 import request from "supertest";
-import { app } from "@src/app";
+import { App } from "@src/app";
 import { signUpRoute, signUpReqBody } from "@controllers/user/sign-up";
 import { saveUser } from "@root/src/shared/user";
 import { dummyUserGenerator } from "@tests/shared/user-generator";
 import { generateUsername } from "unique-username-generator";
+
+const app = new App().app;
 
 describe("sign-up related tests", () => {
 	beforeEach(async () => {
