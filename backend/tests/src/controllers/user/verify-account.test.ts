@@ -2,7 +2,7 @@ import { App } from "@src/app";
 import { saveUser } from "@root/src/shared/user";
 import { saveVerificationCode } from "@shared/user/verification";
 import { dummyUserGenerator } from "@tests/shared/user-generator";
-import { verifAccReqBody, verifAccRoute } from "@controllers/user/verify-account";
+import { verifAccReqBody, VerifyAccount } from "@controllers/user/verify-account";
 import request from "supertest";
 import ms from "ms";
 
@@ -14,7 +14,9 @@ describe("verify-account related tests", () => {
 		jest.useFakeTimers();
 	});
 
-	app.post("/verify-account", verifAccRoute);
+	const verifyAcc = new VerifyAccount();
+
+	app.post("/verify-account", verifyAcc.router);
 
 	test("sending fully empty request body returns 400 status code.", (done) => {
 		request(app)
