@@ -1,4 +1,4 @@
-import { Response } from "express";
+import { Request, Response } from "express";
 import { check } from "express-validator";
 import { ErrorMessages, ValidationMessages } from "@shared/error-lib";
 import { TypedRequestBody } from "@shared/custom-types/express-related";
