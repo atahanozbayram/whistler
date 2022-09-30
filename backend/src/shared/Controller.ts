@@ -7,7 +7,8 @@ abstract class Controller {
 	path: string;
 	router: Router = Router();
 	loggerManip: (req: Request) => Request;
-	validationChain: ValidationChain[];
+	// eslint-disable-next-line
+	validationChain: ValidationChain[] | any;
 	controller: (req: Request, res: Response, next?: NextFunction) => void;
 
 	public setupRouter() {
