@@ -16,7 +16,7 @@
 	"author": "Atahan Ozbayram",
 	"license": "MIT",
 	"dependencies": {
-		"@prisma/client": "^4.4.0",
+		"@prisma/client": "^4.5.0",
 		"bcrypt": "^5.0.1",
 		"body-parser": "^1.20.0",
 		"date-and-time": "^2.4.1",
@@ -57,7 +57,7 @@
 		"jest-mock-extended": "2.0.4",
 		"mailosaur": "^8.4.0",
 		"module-alias-jest": "^0.0.3",
-		"prisma": "^4.4.0",
+		"prisma": "^4.5.0",
 		"supertest": "^6.2.2",
 		"ts-jest": "^27.1.4",
 		"ts-node": "^10.7.0",
