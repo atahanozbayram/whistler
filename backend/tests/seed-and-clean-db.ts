@@ -7,6 +7,7 @@ beforeAll(async () => {
 		await prisma.user.deleteMany({ where: {} });
 		await prisma.user_verification.deleteMany({ where: {} });
 		await prisma.gender.deleteMany({});
+		await prisma.refresh_token.deleteMany({});
 		await seed();
 	}
 });
