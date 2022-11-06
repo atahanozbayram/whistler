@@ -39,3 +39,13 @@ model user_verification {
   valid         Boolean  @default(true)
   attempts_left Int      @default(5) @db.TinyInt
 }
+
+model refresh_token {
+  uuid       Bytes    @id @db.Binary(16)
+  user_uuid  Bytes    @db.Binary(16)
+  code       String   @db.VarChar(128)
+  scope      String?  @db.VarChar(255)
+  created_at DateTime @db.DateTime(0)
+  expires_at DateTime @db.DateTime(0)
+  validity   Boolean? @default(true)
+}
