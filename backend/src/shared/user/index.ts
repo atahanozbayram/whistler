@@ -6,12 +6,12 @@ import { user } from "@prisma/client";
 /*
  * converts from uuidv1 string to 16 bytes hex code
  * @param uuid*/
-const uuidToBinary = function (uuid: string) {
+const uuidToBinary = function(uuid: string) {
 	const binary = Buffer.from(uuid.replaceAll("-", ""), "hex");
 	return binary;
 };
 
-const saveCorrectDate = function (date: Date) {
+const saveCorrectDate = function(date: Date) {
 	return new Date(Date.parse(date.toUTCString()) - date.getTimezoneOffset() * 60000);
 };
 
@@ -30,7 +30,7 @@ const saveUser: (
 		birth_date: Date;
 	},
 	ctx?: Context
-) => Promise<user> = function (userInfo, ctx) {
+) => Promise<user> = function(userInfo, ctx) {
 	return new Promise((resolve, reject) => {
 		ctx ??= { prisma: prismaOg } as Context;
 		const { prisma } = ctx;
