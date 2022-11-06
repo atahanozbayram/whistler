@@ -14,7 +14,7 @@ abstract class Controller {
 	public setupRouter() {
 		this.router.use(
 			this.path,
-			Controller.loggerMw(),
+			Controller.loggerMw(this.loggerManip),
 			this.validationChain,
 			Controller.validationCheckMw,
 			this.controller
@@ -24,8 +24,8 @@ abstract class Controller {
 	/*
 	 * @param reqManipulator a function manipulates req and resturns it
 	 */
-	public static loggerMw = function (reqManipulator?: (req: Request) => Request) {
-		return function (req: Request, res: Response, next: NextFunction) {
+	public static loggerMw = function(reqManipulator?: (req: Request) => Request) {
+		return function(req: Request, res: Response, next: NextFunction) {
 			let reqCopy = req;
 			if (reqManipulator) {
 				reqCopy = reqManipulator(_.cloneDeep(req));
@@ -36,7 +36,7 @@ abstract class Controller {
 		};
 	};
 
-	public static validationCheckMw = function (req: Request, res: Response, next: NextFunction) {
+	public static validationCheckMw = function(req: Request, res: Response, next: NextFunction) {
 		const errors = validationResult(req);
 
 		if (!errors.isEmpty()) {
