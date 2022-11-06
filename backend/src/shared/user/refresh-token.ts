@@ -1,4 +1,3 @@
-import "module-alias/register"; // remove this line later
 import crypto from "crypto";
 import { prisma } from "../prisma-original";
 import { v1 as uuidv1 } from "uuid";
