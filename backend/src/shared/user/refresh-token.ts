@@ -6,7 +6,12 @@ import ms from "ms";
 import date from "date-and-time";
 import jwt from "jsonwebtoken";
 
-const generateRefreshToken = function(user_uuid: Buffer, scope = "", expire_time = "15days"): Promise<string> {
+type AccessToken = {
+	user_uuid: Buffer;
+	scope: string;
+};
+
+const generateRefreshToken = function(user_uuid: Buffer, scope = "", expire_time = "15days"): Promise<refresh_token> {
 	return new Promise((resolve, reject) => {
 		prisma.user
 			.findFirst({ where: { uuid: user_uuid } })
@@ -32,7 +37,7 @@ const generateRefreshToken = function(user_uuid: Buffer, scope = "", expire_time
 						},
 					})
 					.then((rtoken) => {
-						resolve(rtoken.code);
+						resolve(rtoken);
 					});
 			})
 			.catch((error) => reject(error));
@@ -66,7 +71,7 @@ const generateAccessToken = function(rtoken_code: string, expire_time = "15m") {
 							{
 								user_uuid: user1.uuid,
 								scope: rtoken.scope,
-							},
+							} as AccessToken,
 							process.env.ACCESS_TOKEN_SECRET as string,
 							{ expiresIn: expire_time }
 						);
@@ -79,4 +84,4 @@ const generateAccessToken = function(rtoken_code: string, expire_time = "15m") {
 	});
 };
 
-export { generateRefreshToken, generateAccessToken };
+export { AccessToken, generateRefreshToken, generateAccessToken };
