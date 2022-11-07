@@ -5,6 +5,7 @@ import { uuidToBinary } from ".";
 import ms from "ms";
 import date from "date-and-time";
 import jwt from "jsonwebtoken";
+import { refresh_token } from "@prisma/client";
 
 type AccessToken = {
 	user_uuid: Buffer;
