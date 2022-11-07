@@ -80,12 +80,12 @@ class SignIn extends Controller {
 						return;
 					}
 					generateRefreshToken(user1.uuid)
-						.then((rtoken_code) => {
-							generateAccessToken(rtoken_code).then((atoken) => {
+						.then((rtoken) => {
+							generateAccessToken(rtoken.code).then((atoken) => {
 								// store the refresh token in httpOnly cookie,
 								res
 									.status(200)
-									.cookie("refresh_token", rtoken_code, { httpOnly: true, secure: true, sameSite: true })
+									.cookie("refresh_token", rtoken.code, { httpOnly: true, secure: true, sameSite: true })
 									.json({ access_token: atoken });
 							});
 						})
