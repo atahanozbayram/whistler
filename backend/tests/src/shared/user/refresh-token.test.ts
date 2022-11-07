@@ -68,7 +68,7 @@ describe("generateAccessToken tests", () => {
 		}).then((user1) => {
 			generateRefreshToken(user1.uuid).then((rtoken) => {
 				jest.advanceTimersByTime(ms("16 days"));
-				generateAccessToken(rtoken)
+				generateAccessToken(rtoken.code)
 					.then((atoken) => {
 						done(`should have rejected but instead generated access token: ${atoken}`);
 					})
@@ -92,8 +92,8 @@ describe("generateAccessToken tests", () => {
 		}).then((user1) => {
 			generateRefreshToken(user1.uuid).then((rtoken) => {
 				// update the rtoken's validity
-				prisma.refresh_token.updateMany({ where: { code: rtoken }, data: { validity: false } }).then(() => {
-					generateAccessToken(rtoken)
+				prisma.refresh_token.updateMany({ where: { code: rtoken.code }, data: { validity: false } }).then(() => {
+					generateAccessToken(rtoken.code)
 						.then((atoken) => {
 							done(`should have rejected but instead generated access token: ${atoken}`);
 						})
@@ -118,7 +118,7 @@ describe("generateAccessToken tests", () => {
 		})
 			.then((user1) => {
 				generateRefreshToken(user1.uuid).then((rtoken) => {
-					generateAccessToken(rtoken).then(() => {
+					generateAccessToken(rtoken.code).then(() => {
 						done();
 					});
 				});
