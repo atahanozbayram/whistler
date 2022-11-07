@@ -34,7 +34,7 @@ describe("request-verification related tests", () => {
 			.catch((error) => done(error));
 	});
 
-	test("sends verification email when given email address is in the database", (done) => {
+	test.skip("sends verification email when given email address is in the database", (done) => {
 		// mockedSendVerificationEmail.mockResolvedValue();
 
 		saveUser({
