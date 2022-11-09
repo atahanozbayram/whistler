@@ -95,7 +95,7 @@ describe("verify-account related tests", () => {
 				saveVerificationCode(user1.uuid).then((verification) => {
 					const invalidCode = (Number.parseInt(verification.code) + 1).toString();
 
-					const requestPromise = function (code: string) {
+					const requestPromise = function(code: string) {
 						return new Promise<request.Response>((resolve) => {
 							request(app)
 								.post("/verify-account")
