@@ -4,5 +4,6 @@
 	"printWidth": 120,
 	"trailingComma": "es5",
 	"singleQuotes": false,
-	"arrowParens": "always"
+	"arrowParens": "always",
+	"spaceBeforeFunctionParen": "false"
 }
