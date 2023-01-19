@@ -10,24 +10,22 @@ datasource db {
 model gender {
   id     Int    @id
   gender String @db.VarChar(16)
-  user   user[]
 }
 
 model user {
-  uuid                Bytes    @id @db.Binary(16)
-  firstname           String   @db.VarChar(48)
-  lastname            String   @db.VarChar(48)
-  birth_date          DateTime @db.Date
-  gender              Int
-  username            String   @db.VarChar(16)
-  password_hash       String   @db.VarChar(60)
-  verified            Boolean  @default(false)
-  email               String   @db.VarChar(255)
-  created_at          DateTime @default(now())
-  gender_genderTouser gender   @relation(fields: [gender], references: [id], onUpdate: Restrict, map: "user_gender_FK")
+  uuid          Bytes    @id @db.Binary(16)
+  firstname     String   @db.VarChar(48)
+  lastname      String   @db.VarChar(48)
+  birth_date    DateTime @db.Date
+  gender        Int
+  username      String   @db.VarChar(16)
+  password_hash String   @db.VarChar(60)
+  verified      Boolean  @default(false)
+  email         String   @db.VarChar(255)
+  created_at    DateTime @default(now())
 
-  @@index([gender], map: "user_gender_FK")
   @@index([verified], map: "user_verified_IDX")
+  @@index([gender], map: "user_gender_FK")
 }
 
 model user_verification {
